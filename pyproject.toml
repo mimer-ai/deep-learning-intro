@@ -13,7 +13,7 @@ dependencies = [
   "sphinx-evita @ https://github.com/ENCCS/sphinx-evita/archive/refs/tags/v0.1.0b1.zip",
   # "sphinx-lesson>=0.8.19",
   # To avoid sphinx<8 restriction from sphinx-lesson and self-imposed sphinx>8.2 something restriction from sphinx-evita
-  "sphinx-lesson @ https://github.com/coderefinery/sphinx-lesson/archive/96ae33057d19750b39e649ecf2431b23ac9421a4.zip",
+  "sphinx-lesson>=0.8.20",
   "sphinxcontrib-bibtex>=2.6.5",
   "sphinxcontrib-mermaid>=2.0.0",
 ]

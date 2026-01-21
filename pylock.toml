@@ -1333,8 +1333,10 @@ archive = { url = "https://github.com/ENCCS/sphinx-evita/archive/refs/tags/v0.1.
 
 [[packages]]
 name = "sphinx-lesson"
-version = "0.8.19"
-archive = { url = "https://github.com/coderefinery/sphinx-lesson/archive/96ae33057d19750b39e649ecf2431b23ac9421a4.zip", hashes = { sha256 = "1a7fdcfce95340884b2ee8305654f8fa77d4acb70c42693cace138d384891fcc" } }
+version = "0.8.20"
+index = "https://pypi.org/simple"
+sdist = { url = "https://files.pythonhosted.org/packages/80/8d/1b972e0f5212c9293f0ecedf07ebfef2db5e8e66d8bdd0bad982b2d2f9ce/sphinx_lesson-0.8.20.tar.gz", upload-time = 2026-01-21T20:03:55Z, size = 39173, hashes = { sha256 = "d64cd91f4e924b07b7a77469d81bde7b3173a3763ec43f5941ab47be2d0b80c3" } }
+wheels = [{ url = "https://files.pythonhosted.org/packages/8b/d2/793a01ec5481bc4a0f328843356ce1517de5e6d0e7b51d379aa3d7358857/sphinx_lesson-0.8.20-py3-none-any.whl", upload-time = 2026-01-21T20:03:53Z, size = 11949, hashes = { sha256 = "94f385319536de850fc668624d18434697a7eb739d640d1d9f24ed85310d55cd" } }]
 
 [[packages]]
 name = "sphinx-minipres"
