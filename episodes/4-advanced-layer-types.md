@@ -166,8 +166,11 @@ In the previous episodes, we used 'fully connected layers' , that connected all 
 This results in many connections, and thus many weights to be learned, in the network.
 Note that our input dimension is now quite high (even with small pictures of `64x64` pixels): we have 12288 features.
 
+(parameters-exercise-1)=
 :::: challenge
-## Number of parameters{#parameters-exercise-1}
+
+## Number of parameters
+
 Suppose we create a single Dense (fully connected) layer with 100 hidden units that connect to the input pixels, how many parameters does this layer have?
 
 - A. 1228800
@@ -266,9 +269,12 @@ in the context of applying a _Gaussian blur_.
 :::
 ::::
 
+(parameters-exercise-3)=
 :::: challenge
-## Number of model parameters{#parameters-exercise-3}
-Suppose we apply a convolutional layer with 100 kernels of size 3 * 3 * 3 (the last dimension applies to the rgb channels) to our images of 64 * 64 * 3 pixels. How many parameters do we have? Assume, for simplicity, that the kernels do not use bias terms. Compare this to the answer of the earlier exercise, ["Number of Parameters"](#parameters-exercise-1).
+
+## Number of model parameters
+
+Suppose we apply a convolutional layer with 100 kernels of size 3 _3_ 3 (the last dimension applies to the rgb channels) to our images of 64 _64_ 3 pixels. How many parameters do we have? Assume, for simplicity, that the kernels do not use bias terms. Compare this to the answer of the earlier exercise, ["Number of Parameters"](#parameters-exercise-1).
 
 ::: solution
 ## Solution

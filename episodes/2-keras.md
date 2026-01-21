@@ -35,7 +35,7 @@ In fact, this is also what we would recommend you to do when working on real-wor
 First quickly build a working pipeline, while taking shortcuts.
 Then, slowly make the pipeline more advanced while you keep on evaluating the approach.
 
-In [episode 3](episodes/3-monitor-the-model.md) we will expand on the concepts that are lightly introduced in this episode.
+In [episode 3](./3-monitor-the-model.md) we will expand on the concepts that are lightly introduced in this episode.
 Some of these concepts include: how to monitor the training progress and how optimization works.
 
 ::: instructor
@@ -320,7 +320,11 @@ keras.utils.set_random_seed(2)
 ```
 
 ::: callout
+
+(when-to-use-random-seeds)=
+
 ## When to use random seeds?
+
 We use a random seed here to ensure that we get the same results every time we run this code.
 This makes our results reproducible and allows us to better compare results between different experiments.
 
@@ -547,13 +551,15 @@ Another best practice is to start with a relatively simple architecture. Once ru
 :::
 
 ### Choose a pretrained model
+
 If your data and problem is very similar to what others have done, you can often use a *pretrained network*.
 Even if your problem is different, but the data type is common (for example images), you can use a pretrained network and finetune it for your problem.
 A large number of openly available pretrained networks can be found on [Hugging Face](https://huggingface.co/models) (especially LLMs), [MONAI](https://monai.io/) (medical imaging), the [Model Zoo](https://modelzoo.co/), [pytorch hub](https://pytorch.org/hub/) or [tensorflow hub](https://www.tensorflow.org/hub/).
 
-We will cover the concept of Transfer Learning in [episode 5](./5-transfer-learning.html)
+We will cover the concept of Transfer Learning in [episode 5](./5-transfer-learning.md)
 
 ## 5. Choose a loss function and optimizer
+
 We have now designed a neural network that in theory we should be able to
 train to classify Penguins.
 However, we first need to select an appropriate loss
@@ -811,7 +817,7 @@ We can try many things to improve the performance from here. One of the first th
 Furthermore, the constructed neural network has a limited number of parameters.
 A practical workaround is to increase the number of dense layers and also the number of neurons in each dense layers.
 
-In addition, adjusting the learning rate can also help achieving a high score for the prediction. You will get more info in the [**Advanced layer types**](./4-advanced-layer-types.html) episode.
+In addition, adjusting the learning rate can also help achieving a high score for the prediction. You will get more info in the [**Advanced layer types**](./4-advanced-layer-types.md) episode.
 
 Note that the outcome you have might be slightly different from what is shown in this tutorial.
 ::::

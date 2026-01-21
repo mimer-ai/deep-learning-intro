@@ -110,8 +110,8 @@ Combine the following statements to the correct activation function:
 6. (optional) This function is not differentiable at 0
 7. (optional) This function is the default for Dense layers (search the Keras documentation!)
 
-*Activation function plots by Laughsinthestocks - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=44920411,
-https://commons.wikimedia.org/w/index.php?curid=44920600, https://commons.wikimedia.org/w/index.php?curid=44920533*
+_Activation function plots by Laughsinthestocks - Own work, CC BY-SA 4.0, <https://commons.wikimedia.org/w/index.php?curid=44920411>,
+<https://commons.wikimedia.org/w/index.php?curid=44920600>, <https://commons.wikimedia.org/w/index.php?curid=44920533>_
 
 ::: solution
 ## Solution
@@ -250,7 +250,7 @@ To solve it:
 3.  Click on "Math Renderer".
 4.  Click on "Common HTML".
 
-from: https://physics.meta.stackexchange.com/questions/14408/bug-in-mathjax-rendering-using-chrome
+from: <https://physics.meta.stackexchange.com/questions/14408/bug-in-mathjax-rendering-using-chrome>
 :::
 
 :::: challenge
@@ -485,10 +485,10 @@ Keras also benefits from a very good set of [online documentation](https://keras
 
 ### Installing Keras and other dependencies
 
-Follow the [setup instructions](learners/setup.md#packages) to install Keras, Seaborn and scikit-learn.
+Follow the [setup instructions](./setup.md#packages) to install Keras, Seaborn and scikit-learn.
 
 ## Testing Keras Installation
-Keras is available as a module within TensorFlow, as described in the [setup instructions](learners/setup.md#packages).
+Keras is available as a module within TensorFlow, as described in the [setup instructions](./setup.md#packages).
 Let's therefore check whether you have a suitable version of TensorFlow installed.
 Open up a new Jupyter notebook or interactive python console and run the following commands:
 ```python

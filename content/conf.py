@@ -60,6 +60,7 @@ myst_enable_extensions = [
 myst_dmath_double_inline = True
 myst_fence_as_directive = {"mermaid"}
 myst_substitutions = {"author": author}
+myst_heading_anchors = 4
 
 # Settings for sphinx-copybutton
 copybutton_exclude = ".linenos, .gp"

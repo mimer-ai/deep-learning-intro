@@ -8,10 +8,12 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
   "jupytext>=1.18.1",
   "myst-nb>=1.3.0",
-  "sphinx>=8.2.3,<9",
+  "sphinx<9",
   # "sphinx-evita>=0.1.0b1",
   "sphinx-evita @ https://github.com/ENCCS/sphinx-evita/archive/refs/tags/v0.1.0b1.zip",
-  "sphinx-lesson>=0.8.16",
+  # "sphinx-lesson>=0.8.19",
+  # To avoid sphinx<8 restriction from sphinx-lesson and self-imposed sphinx>8.2 something restriction from sphinx-evita
+  "sphinx-lesson @ https://github.com/coderefinery/sphinx-lesson/archive/96ae33057d19750b39e649ecf2431b23ac9421a4.zip",
   "sphinxcontrib-bibtex>=2.6.5",
   "sphinxcontrib-mermaid>=2.0.0",
 ]
