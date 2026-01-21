@@ -35,6 +35,8 @@ learner-profiles
 
 # Schedule
 
+All times in CET (Europe/Stockholm time)
+
 ## Day 1
 
 | Time  | Topic                                                       |
@@ -56,26 +58,24 @@ learner-profiles
 | 9:10  | [Monitor the training process](./3-monitor-the-model) |
 | 9:50  | Coffee Break                                          |
 | 10:00 | [Monitor the training process](./3-monitor-the-model) |
-| 10:20 | [Advanced Layer Types](./4-advanced-layer-types)      |
 | 10:50 | Coffee Break                                          |
-| 11:00 | [Advanced Layer Types](./4-advanced-layer-types)      |
-| 11:20 | [Transfer learning](./5-transfer-learning)            |
-| 11:40 | [Outlook](./6-outlook)                                |
+| 11:00 | [Monitor the training process](./3-monitor-the-model) |
 | 11:50 | Wrap-up                                               |
 | 12:00 | END                                                   |
 
 ## Day 3
 
-| Time  | Topic                |
-| ----- | -------------------- |
-| 9:00  | Welcome and recap    |
-| 9:05  | TBD                  |
-| 9:55  | Coffee Break         |
-| 10:00 | TBD                  |
-| 10:50 | Coffee Break         |
-| 11:00 | TBD                  |
-| 11:50 | Post-workshop survey |
-| 12:00 | END                  |
+| Time  | Topic                                            |
+| ----- | ------------------------------------------------ |
+| 9:00  | Welcome and recap                                |
+| 9:10  | [Advanced Layer Types](./4-advanced-layer-types) |
+| 9:50  | Coffee Break                                     |
+| 10:00 | [Advanced Layer Types](./4-advanced-layer-types) |
+| 10:30 | Coffee Break                                     |
+| 10:40 | [Transfer learning](./5-transfer-learning)       |
+| 11:40 | [Outlook](./6-outlook)                           |
+| 11:50 | Post-workshop survey                             |
+| 12:00 | END                                              |
 
 ## Other related lessons
 
