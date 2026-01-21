@@ -68,6 +68,7 @@ jinja2==3.1.5
     # via
     #   myst-parser
     #   sphinx
+    #   sphinxcontrib-mermaid
 jsonschema==4.23.0
     # via nbformat
 jsonschema-specifications==2024.10.1
@@ -145,6 +146,7 @@ pyyaml==6.0.2
     #   jupyter-cache
     #   myst-nb
     #   myst-parser
+    #   sphinxcontrib-mermaid
 pyzmq==26.2.1
     # via
     #   ipykernel
@@ -180,6 +182,7 @@ sphinx==7.4.7
     #   sphinx-tabs
     #   sphinx-togglebutton
     #   sphinxcontrib-jquery
+    #   sphinxcontrib-mermaid
 sphinx-autobuild==2024.10.3
     # via sphinx-lesson
 sphinx-copybutton==0.5.2
@@ -210,6 +213,8 @@ sphinxcontrib-jquery==4.1
     # via sphinx-rtd-theme
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
+sphinxcontrib-mermaid==2.0.0
+    # via -r requirements.in
 sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0

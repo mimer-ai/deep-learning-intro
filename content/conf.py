@@ -37,6 +37,7 @@ extensions = [
     # remove once sphinx_rtd_theme updated for contrast and accessibility:
     "sphinx_rtd_theme_ext_color_contrast",
     "sphinx.ext.todo",
+    "sphinxcontrib.mermaid",
 ]
 
 # Settings for myst_nb:
@@ -47,9 +48,15 @@ extensions = [
 nb_execution_mode = "cache"
 
 # https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
-myst_enable_extensions = ["colon_fence", "dollarmath", "amsmath", "attrs_inline", "substitution"]
+myst_enable_extensions = [
+    "colon_fence",
+    "dollarmath",
+    "amsmath",
+    "attrs_inline",
+    "substitution",
+]
 myst_dmath_double_inline = True
-# myst_fence_as_directive = {"output"}
+myst_fence_as_directive = {"mermaid"}
 
 # Settings for sphinx-copybutton
 copybutton_exclude = ".linenos, .gp"
