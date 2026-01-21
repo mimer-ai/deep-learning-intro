@@ -7,7 +7,7 @@
 
   /* Equivalent to child combinator .admonition-xxxx > .admonition-title */
   .admonition-title {
-    background-color: lch(from var(--evita-color-info) l c h / 0.2) !important;
+    background-color: var(--evita-color-info-bg) !important;
     border-color: var(--evita-color-info) !important;
   }
   /* Equivalent to child combinator .admonition-xxxx > .admonition-title::before */
@@ -21,7 +21,7 @@
 
   /* Equivalent to child combinator .admonition-xxxx > .admonition-title */
   .admonition-title {
-    background-color: lch(from var(--evita-color-internal) l c h / 0.2);
+    background-color: var(--evita-color-internal-bg);
     border-color: var(--evita-color-internal);
   }
   /* Equivalent to child combinator .admonition-xxxx > .admonition-title::before */
@@ -35,8 +35,4 @@
     -webkit-mask-image: var(--icon--instructor-note) !important;
     mask-image: var(--icon--instructor-note) !important;
   }  
-}
-
-table.align-default {
-  margin-left: unset;
 }

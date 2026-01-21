@@ -1329,7 +1329,7 @@ wheels = [{ url = "https://files.pythonhosted.org/packages/9e/48/1ea60e74949eecb
 [[packages]]
 name = "sphinx-evita"
 version = "0.1.0b1"
-archive = { url = "https://github.com/ENCCS/sphinx-evita/archive/refs/tags/v0.1.0b1.zip", hashes = { sha256 = "1dd4adeaa15904657fa2f84c3f6c385b4eed94111331ae7c5935a90aa86564aa" } }
+archive = { url = "https://github.com/ENCCS/sphinx-evita/archive/8f8a07dac2f7c667b81f74a181751990e6edb15e.zip", hashes = { sha256 = "7b09df64755b9e516c07b127ca3740ef7e0d26867db0778dfaf2b3afb9bfd837" } }
 
 [[packages]]
 name = "sphinx-lesson"
