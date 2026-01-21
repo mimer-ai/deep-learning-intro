@@ -60,4 +60,7 @@ content/_patched
 _build
 
 .venv/
-venv/
+/venv*
+.jupyter_cache
+jupyter_execute
+uv.lock
