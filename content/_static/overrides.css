@@ -36,3 +36,7 @@
     mask-image: var(--icon--instructor-note) !important;
   }  
 }
+
+table.align-default {
+  margin-left: unset;
+}
