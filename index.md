@@ -14,6 +14,8 @@ We start with explaining the basic concepts of neural networks, and then go thro
 Learners will learn how to prepare data for deep learning, how to implement a basic deep learning model in Python with Keras, 
 how to monitor and troubleshoot the training process and how to implement different layer types such as convolutional layers.
 
+<!--end-intro-->
+
 ### Other related lessons
 #### Introduction to artificial neural networks in Python
 The [Introduction to artificial neural networks in Python lesson](https://carpentries-incubator.github.io/machine-learning-neural-python/)

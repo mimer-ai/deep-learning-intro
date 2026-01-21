@@ -2,7 +2,7 @@
 
 ```{include} ../index.md
 :start-after: Welcome
-:end-before: Other related lessons
+:end-before: <!--end-intro-->
 ```
 
 ```{toctree}
@@ -33,11 +33,11 @@ instructor-notes
 learner-profiles
 ```
 
-# Schedule
+## Schedule
 
 All times in CET (Europe/Stockholm time)
 
-## Day 1
+### Day 1
 
 | Time  | Topic                                                       |
 | ----- | ----------------------------------------------------------- |
@@ -50,7 +50,7 @@ All times in CET (Europe/Stockholm time)
 | 11:50 | Wrap-up                                                     |
 | 12:00 | END                                                         |
 
-## Day 2
+### Day 2
 
 | Time  | Topic                                                 |
 | ----- | ----------------------------------------------------- |
@@ -63,7 +63,7 @@ All times in CET (Europe/Stockholm time)
 | 11:50 | Wrap-up                                               |
 | 12:00 | END                                                   |
 
-## Day 3
+### Day 3
 
 | Time  | Topic                                            |
 | ----- | ------------------------------------------------ |
