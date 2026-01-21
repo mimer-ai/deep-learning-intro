@@ -17,16 +17,18 @@ Instead of training a model from scratch, with transfer learning you make use of
 
 An example: Let's say that you want to train a model to classify images of different dog breeds. You could make use of a pre-trained network that learned how to classify images of dogs and cats. The pre-trained network will not know anything about different dog breeds, but it will have captured some general knowledge of, on a high-level, what dogs look like, and on a low-level all the different features (eyes, ears, paws, fur) that make up an image of a dog. Further training this model on your dog breed dataset is a much easier task than training from scratch, because the model can use the general knowledge captured in the pre-trained network.
 
-![](fig/05-transfer_learning.png)
-<!-- 
-Edit this plot using the Mermaid live editor:
-1. Open this link that includes the source code of the chart to open the live editor web interface:
-https://mermaid.live/edit#pako:eNpVkE1vgzAMhv9K5MPUSrQKAWUlh0kr9NZetp02drAgUCRIqhC0dZT_vizso_PJb_zYr-MRCl1KEFC1-q04orFk_5Ar4uL-ZZHpuic3JEXbkwwtLl_JanVHLk8GG0UOrrO9kO3CJ-QKXs4T0tGBqq-kIXuJRjWqnubK1s9JZ5F5I7I1Upb_fL7rqRe7a8g7LiGATpoOm9J9YPyCc7BH2ckchEtLWeHQ2hxyNTkUB6sfz6oAYc0gAzB6qI8gKmx7p4ZTiVZmDdYGu9_XE6pnrf-0LBurzWE-mb-cZ0CM8A5iRdfUBeObmEZJzKOEJRHnUQBnECwK15zRMGJxzNkmoXwK4MMPD30bpSHjt5SHSfyzzs7bzQtPn9Xpf_E
-2. Make changes to the chart as desired in the live editor
-3. Download the newly created diagram from the live editor (Actions / PNG) and replace the existing image in the episode folder (episodes/fig/05-transfer_learning.png)
-4. (optional) crop the image to remove the white space around the plot in a separate image editor
-5. Update the URL in step 1 of this comment to the new URL of the live editor
--->
+```mermaid
+flowchart LR
+    accTitle: Transfer Learning
+    accDescr {The "Dogs & Cats" dataset is used to train a model.
+    With Transfer Learning, the smaller "Dog Breeds" dataset is used to add more specific data.
+    This results in the "Dog Breeds" model that makes use of both data sets.}
+    A[(Dogs & Cats Data)] --> |Train Model| B(Model Dogs & Cats)
+    C{Transfer Learning}
+    B --> C
+    D[(Dog Breeds Data)] --> C
+    C --> E(Dog Breeds Model)
+```
 
 In this episode we will learn how use Keras to adapt a state-of-the-art pre-trained model to the [Dollar Street Dataset](https://zenodo.org/records/10970014).
 
@@ -263,6 +265,9 @@ The final validation accuracy reaches 64%, this is a huge improvement over 30% a
 
 ## Concluding: The power of transfer learning
 In many domains, large networks are available that have been trained on vast amounts of data, such as in computer vision and natural language processing. Using transfer learning, you can benefit from the knowledge that was captured from another machine learning task. In many fields, transfer learning will outperform models trained from scratch, especially if your dataset is small or of poor quality.
+
+Transfer learning adapts a model to a specific dataset. This typically leads to improvements in the particular domain covered by the data.
+[Research](https://www.nature.com/articles/s41586-025-09937-5) has shown, however, that fine-tuning the model weights like this can have negative side effects on the model performance in other domains so that a specialized, fine-tuned model must be re-evaluated before using it for more generic tasks.
 
 ::: keypoints
 - Large pre-trained models capture generic knowledge about a domain

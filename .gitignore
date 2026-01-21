@@ -58,3 +58,6 @@ renv/sandbox # OPTIONAL
 
 content/_patched
 _build
+
+.venv/
+venv/

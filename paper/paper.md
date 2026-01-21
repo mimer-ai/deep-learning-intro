@@ -10,14 +10,35 @@ authors:
   - name: Sven A. van der Burg
     orcid: 0000-0003-1250-6968
     affiliation: 1 # (Multiple affiliations must be quoted, like "1, 2")
+  - name: Pranav Chandramouli
+    orcid: 0000-0002-7896-2969
+    affiliation: 1
   - name: Anne Fouilloux
     orcid: 0000-0002-1784-2920
     affiliation: 2
+  - name: Cunliang Geng
+    orcid: 0000-0002-1409-8358
+    affiliation: 1
+  - name: Toby Hodges
+    orcid: 0000-0003-1766-456X
+    affiliation: 8
   - name: Florian Huber
     orcid: 0000-0002-3535-9406
     affiliation: "1, 3"
   - name: Dafne van Kuppevelt
     orcid: 0000-0002-2662-1994
+    affiliation: 1
+  - name: Ashwin Vishnu Mohanan
+    orcid: 0000-0002-2979-6327
+    affiliation: 9    
+  - name: Colin Sauze
+    orcid: 0000-0001-5368-9217
+    affiliation: 5
+  - name: Carsten Schnober
+    orcid: 0000-0001-9139-1577
+    affiliation: 1
+  - name: Djura Smits
+    orcid: 0000-0003-4096-0260
     affiliation: 1
   - name: Peter Steinbach
     orcid: 0000-0002-4974-230X
@@ -25,27 +46,12 @@ authors:
   - name: Berend Weel
     orcid: 0000-0002-9693-9332
     affiliation: 1
-  - name: Colin Sauze
-    orcid: 0000-0001-5368-9217
-    affiliation: 5
+  - name: Kjartan Thor Wikfeldt
+    orcid: 0000-0002-1655-3676
+    affiliation: 9
   - name: Samantha Wittke
     orcid: 0000-0002-9625-7235
     affiliation: "6,7"
-  - name: Djura Smits
-    orcid: 0000-0003-4096-0260
-    affiliation: 1
-  - name: Cunliang Geng
-    orcid: 0000-0002-1409-8358
-    affiliation: 1
-  - name: Pranav Chandramouli
-    orcid: 0000-0002-7896-2969
-    affiliation: 1
-  - name: Carsten Schnober
-    orcid: 0000-0001-9139-1577
-    affiliation: 1
-  - name: Toby Hodges
-    orcid: 0000-0003-1766-456X
-    affiliation: 8
     
 
 affiliations:
@@ -65,6 +71,8 @@ affiliations:
    index: 7
  - name: The Carpentries, USA
    index: 8
+ - name: RISE Research Institutes of Sweden, Sweden
+   index: 9   
 date: 8 August 2023
 bibliography: paper.bib
 
@@ -94,8 +102,12 @@ We use data with permissive licenses and designed for real world use cases:
 - The Dollar Street Dataset (@gaviria_rojas_dollar_2022) is representative and contains accurate demographic information to ensure their robustness and fairness, especially for smaller subpopulations.
 
 # Statement of Need
+
+This lesson addresses the need for an introductory lesson on deep learning that is open-source, and can be used by instructors in a workshop as well as for self-study.
+While generally usable, its target audience are academic researchers.
+
 There are many free online course materials on deep learning, 
-see for example: @noauthor_fastai_nodate; @noauthor_udemy_nodate; @noauthor_udemy_nodate-1; @noauthor_udemy_nodate-2; @noauthor_coursera_nodate; @noauthor_freecodecamporg_2022. 
+see for example: @howard2020deep; @mishra_free_nodate; @slim_free_nodate; @noauthor_udemy_nodate-2; @ng_deep_nodate; @bourke_pytorch_2022. 
 
 Nonetheless, these resources are often not available open-source and can thus not be easily adapted to the students' needs. 
 Also, these resources are intended to use for self-study. Our material can be used for self-study, but it is primarily developed for instructors to use in a workshop.
@@ -108,8 +120,8 @@ Whereas this lesson is a general introduction to applied deep learning showing v
 Many computing centers offer (local) deep learning courses, such as @noauthor_csc-_nodate. 
 But the lesson material, if it is available, is not easily adopted outside the course organisation.
 
-What works well for learners is to both make them familiar with the key concepts, and also let them 
-practice with how to implement it. Eventually resulting in an increase in confidence and  the conviction that 'I can do this myself'. 
+The pedagogical approach of this lesson is both to make learners familiar with the key concepts, and let them 
+practice with how to implement them -- eventually resulting in an increase in confidence and the conviction that 'I can do this myself'.
 The key to getting there is live coding: before the course, learners have to setup a working environment on their own computer.
 During the course, learners type in the commands that are explained by the instructor on their own computer.
 This design is based on the Software Carpentry [@wilson_software_2006] philosophy.
@@ -122,6 +134,19 @@ To accomplish this, we created a lesson that can be taught in 2 consecutive days
 Demand for our workshops and feedback gathered from students demonstrated the
 need for a low-threshold lesson that lets researchers take the first steps in the field of deep learning.
 This impression was validated by other instructors who taught the lesson independently to their own audiences and provided us with feedback on their experience.
+
+# Lesson Development
+
+In 2018, the Netherlands eScience Center initiated the development of this lesson to fill the gap identified above.
+Over the years, the lesson has attracted a broad community of individuals and organizations that have used the material for teaching workshops, and contributed to the improvement of the lesson significantly.
+
+The diversity of the involved parties has facilitated the integration of various viewpoints on the lesson material.
+Apart from the feedback gathered from students while teaching the workshop (see below), the mix of contributors includes educators, data scientists, and, most prominently, (research) software engineers.
+Some of them have had years of experience in the deep learning domain, while others have used the lesson as a first step into the field.
+
+Development sprints of typically two full working days have regularly facilitated focussed collaboration sessions that have brought together various contributors to tackle specific issues identified in the lesson material.
+These sessions have also provided a fruitful ground for discussing the various experiences with and insights about the material.
+They have facilitated the iterative improvement of the material, resulting in a mature and well-tested set of episodes.
 
 # Instructional design
 This lesson material was designed using the concepts from The Carpentries Curriculum Development Handbook [@becker_carpentries_nodate].
@@ -180,7 +205,7 @@ with some responses from students to the question 'What was your favourite or mo
 
 Below are two tables summarizing results from our post-workshop survey. We use the students' feedback to continuously improve the lesson. 
 
-|                                                                                            |          STRONGLY DISAGREE    |     DISAGREE    |     UNDECIDED    |     AGREE    |     STRONGLY AGREE    |     TOTAL    |     WEIGHTED AVERAGE    |
+|                                                                                            |          Strongly Disagree    |     Disagree    |     Undecided    |     Agree    |     Strongly Agree    |     Total    |     Weighted Average    |
 |--------------------------------------------------------------------------------------------|-------------------------------|-----------------|------------------|--------------|-----------------------|--------------|-------------------------|
 | I can immediately apply what I learned at this workshop.                                   | 0                             | 5               | 6                | 19           | 8                     | 38           | 3,8                     |
 | The setup and installation instructions for the lesson were complete and easy to follow.   | 0                             | 0               | 4                | 13           | 21                    | 38           | 4,4                     |
@@ -189,12 +214,12 @@ Below are two tables summarizing results from our post-workshop survey. We use t
 Table 1: Agreement on statements by students from 2 workshops taught at the Netherlands eScience Center. 
 The results from these 2 workshops are a good representation of the general feedback we get when teaching this workshop.
 
-|                                                                           |          POOR    |     FAIR    |     GOOD    |     VERY GOOD    |     EXCELLENT    |     N/A    |     TOTAL    |     WEIGHTED AVERAGE    |
+|                                                                           |          Poor    |     Fair    |     Good    |     Very Good    |     Excellent    |     N/A    |     Total    |     Weighted Average    |
 |---------------------------------------------------------------------------|------------------|-------------|-------------|------------------|------------------|------------|--------------|-------------------------|
 |     Introduction into Deep Learning                                       | 0 (0%)           | 2 (5%)      | 10 (27%)    | 8 (22%)          | 17 (46%)         | 0 (0%)     | 37           | 4,1                     |
 |     Classification by a Neural Network using Keras (penguins dataset)     | 0 (0%)           | 1 (3%)      | 5 (13%)     | 16 (42%)         | 16 (42%)         | 0 (0%)     | 38           | 4,2                     |
 |     Monitoring and Troubleshooting the learning process (weather dataset) | 0 (0%)           | 0 (0%)      | 4 (11%)     | 18 (47%)         | 16 (42%)         | 0 (0%)     | 38           | 4,3                     |
-|     Advanced layer types (CIFAR-10 dataset)                               | 0 (0%)           | 2 (5%)      | 5 (13%)     | 7 (18%)          | 16 (42%)         | 8 (21%)    | 38           | 4,2                     |
+|     Advanced layer types (CIFAR-10/Dollarstreet-10 datasets)              | 0 (0%)           | 2 (5%)      | 5 (13%)     | 7 (18%)          | 16 (42%)         | 8 (21%)    | 38           | 4,2                     |
 
 Table 2: Quality of the different episodes of the workshop as rated by students from 2 workshops taught at the Netherlands eScience Center. 
 The results from these 2 workshops are a good representation of the general feedback we get when teaching this workshop.
@@ -202,14 +227,14 @@ The results from these 2 workshops are a good representation of the general feed
 ## Carpentries Lab review process
 Prior to submitting this paper the lesson went through the substantial review in the process of becoming an official Carpentries Lab (https://carpentries-lab.org/) lesson. This led to a number of improvements to the lesson. In general the accessibility and user-friendliness improved, for example by updating alt-texts and using more beginner-friendly and clearer wording. Additionally, the instructor notes were improved and many missing explanations of important deep learning concepts were added to the lesson. 
 
-Most importantly, the reviewers pointed out that the CIFAR-10 [@noauthor_cifar-10_nodate] dataset that we initially used does not have a license. We were surprised to find out that this dataset, that is one of the most widely used datasets in the field of machine learning and deep learning, is actually unethically scraped from the internet without permission from image owners. As an alternative we now use 'Dollar street 10' [@van_der_burg_dollar_2024], a dataset that was adapted for this lesson from The Dollar Street Dataset (@gaviria_rojas_dollar_2022). The Dollar Street Dataset is representative and contains accurate demographic information to ensure their robustness and fairness, especially for smaller subpopulations. In addition, it is a great entry point to teach learners about ethical AI and bias in datasets.
+Most importantly, the reviewers pointed out that the CIFAR-10 [krizhevsky_learning_2009] dataset that we initially used does not have a license. We were surprised to find out that this dataset, that is one of the most widely used datasets in the field of machine learning and deep learning, is actually unethically scraped from the internet without permission from image owners. As an alternative we now use 'Dollar street 10' [@van_der_burg_dollar_2024], a dataset that was adapted for this lesson from The Dollar Street Dataset (@gaviria_rojas_dollar_2022). The Dollar Street Dataset is representative and contains accurate demographic information to ensure their robustness and fairness, especially for smaller subpopulations. In addition, it is a great entry point to teach learners about ethical AI and bias in datasets.
 
 You can find all details of the review process on GitHub: https://github.com/carpentries-lab/reviews/issues/25.
 
 # Conclusion
 This lesson can be taught as a stand-alone workshop to students already familiar with machine learning and Python.
 It can also be taught in a broader curriculum after an introduction to Python programming (for example: @azalee_bostroem_software_2016) 
-and an introduction to machine learning (for example: @noauthor_scikit-learn_2023).
+and an introduction to machine learning (for example: @esteve_inriascikit-learn-mooc_2022).
 Concluding, the described lesson material is a unique and essential resource aimed at researchers and designed specifically for a live-coding teaching style.
 Hopefully, it will help many researchers to set their first steps in a successful application of deep learning to their own domain.
 
