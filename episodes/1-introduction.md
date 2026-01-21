@@ -230,7 +230,7 @@ Note that the color coding refers to different layer types that will be introduc
 as we proceed in this lesson.](fig/01_deep_network.png){alt='An example of a deep neural network'}
 
 ![As a result of the optimization process, the different layers of a neural network tend to learn increasingly abstract representations of the input data.
-](fig/01_nn_abstraction_layers.png)
+](fig/01_nn_abstraction_layers.png){alt='Example of two different neural networks and how each layer process different abstract representations of input data'}
 
 ### How do neural networks learn?
 What happens in a neural network during the training process?
