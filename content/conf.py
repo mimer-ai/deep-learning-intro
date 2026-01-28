@@ -182,12 +182,8 @@ def setup(app):
 import os
 
 if os.environ.get("GITHUB_REF", "") == f"refs/heads/{github_version}":
+    # Privacy-friendly analytics by Plausible
     html_js_files = [
-        (
-            "https://plausible.io/js/script.js",
-            {
-                "data-domain": "mimer-ai.github.io/deep-learning-intro",
-                "defer": "defer",
-            },
-        ),
+        ("pa.js", {"async": "async"}),
+        "pa_init.js",
     ]
