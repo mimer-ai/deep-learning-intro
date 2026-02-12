@@ -2,8 +2,6 @@ channels:
   - conda-forge
 dependencies:
   - keras
-  - tensorflow
-  - keras-tuner
   - pydot
   - pytorch
   - torchinfo
@@ -12,3 +10,5 @@ dependencies:
   - seaborn
   - scikit-learn
   - pandas
+  # - tensorflow
+  # - keras-tuner
