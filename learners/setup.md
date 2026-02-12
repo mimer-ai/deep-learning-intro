@@ -72,12 +72,33 @@ Remember that you need to activate your environment every time you restart your 
 
 3. Install the required packages:
 
+In the course, you will have two tracks to opt from: one using Keras and one using PyTorch.
+
+::: note
+
+### For learners following the Keras track
+
+[Keras can use either
+TensorFlow, PyTorch or JAX as a backend](https://keras.io/getting_started/#configuring-your-backend).
+TensorFlow or JAX are not required for the course, but it can be useful in the future.
+
+We recommend that you keep a lightweight installation. Set the environment variable
+`KERAS_BACKEND` to `torch` to use PyTorch as the backend for Keras, **before running any other commands** in Python console or Jupyter Lab, as follows:
+
+```python
+import os
+
+os.environ["KERAS_BACKEND"] = "torch"
+```
+
+:::
+
 ::: spoiler
 
 ### On Linux/macOs
 
 ```shell
-python3 -m pip install jupyter seaborn scikit-learn pandas tensorflow pydot
+python3 -m pip install jupyter seaborn scikit-learn pandas keras pydot torch torchinfo torchmetrics torchvision
 ```
 
 Note for MacOS users: there is a package `tensorflow-metal` which accelerates the training of machine learning models with TensorFlow on a recent Mac with a Silicon chip (M1/M2/M3).
@@ -90,12 +111,10 @@ However, the installation is currently broken in the most recent version (as of 
 ### On Windows
 
 ```shell
-py -m pip install jupyter seaborn scikit-learn pandas tensorflow pydot
+py -m pip install jupyter seaborn scikit-learn pandas keras pydot torch torchinfo torchmetrics torchvision
 ```
 
 :::
-
-Note: Tensorflow makes Keras available as a module too.
 
 An [optional challenge in episode 2](./2-keras.md) requires installation of Graphviz
 and instructions for doing that can be found
@@ -129,19 +148,26 @@ print('seaborn version: ', seaborn.__version__)
 import pandas
 print('pandas version: ', pandas.__version__)
 
-import tensorflow
-print('Tensorflow version: ', tensorflow.__version__)
+import keras
+print('Keras version: ', keras.__version__)
+
+import torch
+print('PyTorch version: ', torch.__version__)
 ```
 
 This should output the versions of all required packages without giving errors.
 Most versions will work fine with this lesson, but:
-- For Keras and Tensorflow, the minimum version is 2.12.0
+- For Keras, the minimum version is 3.0
+- For PyTorch, the minimum version is 2.1.0
 - For sklearn, the minimum version is 1.2.2
 
 ## Fallback option: cloud environment
-If a local installation does not work for you, it is also possible to run this lesson in [Binder Hub](https://mybinder.org/v2/gh/carpentries-lab/deep-learning-intro/scaffolds). This should give you an environment with all the required software and data to run this lesson, nothing which is saved will be stored, please copy any files you want to keep. Note that if you are the first person to launch this in the last few days it can take several minutes to startup. The second person who loads it should find it loads in under a minute. Instructors who intend to use this option should start it themselves shortly before the workshop begins.
 
-Alternatively you can use [Google colab](https://colab.research.google.com/). If you open a jupyter notebook here, the required packages are already pre-installed. Note that google colab uses jupyter notebook instead of Jupyter Lab.
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mimer-ai/deep-learning-intro/scaffolds)
+
+If a local installation does not work for you, it is also possible to run this lesson in [Binder Hub](https://mybinder.org/v2/gh/mimer-ai/deep-learning-intro/scaffolds). This should give you an environment with all the required software and data to run this lesson, nothing which is saved will be stored, please copy any files you want to keep. Note that if you are the first person to launch this in the last few days it can take several minutes to startup. The second person who loads it should find it loads in under a minute. Instructors who intend to use this option should start it themselves shortly before the workshop begins.
+
+**Alternatively** you can use [Google colab](https://colab.research.google.com/). If you open a jupyter notebook here, most of the required packages are already pre-installed. Note that google colab uses jupyter notebook instead of Jupyter Lab.
 
 ## Downloading the required datasets
 
