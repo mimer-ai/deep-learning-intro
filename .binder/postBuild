@@ -1,4 +1,5 @@
 mkdir data
 cd data
 wget https://zenodo.org/record/4980359/files/weather_prediction_dataset.csv?download=1 -O weather_prediction_dataset.csv
-
+wget https://zenodo.org/api/records/10970014/files-archive -O dataset_dollarstreet.zip
+unzip -d dataset_dollarstreet/ dataset_dollarstreet.zip
