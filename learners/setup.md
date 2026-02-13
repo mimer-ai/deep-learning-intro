@@ -72,37 +72,20 @@ Remember that you need to activate your environment every time you restart your 
 
 3. Install the required packages:
 
-In the course, you will have two tracks to opt from: one using Keras and one using PyTorch.
+In the course, you will have two tracks to opt from: **one using PyTorch and one using Keras**. We recommend
+PyTorch for the intermediate-level Python users and above; and Keras for beginners.
 
-::: note
+::::::: group-tab
 
-### For learners following the Keras track
-
-[Keras can use either
-TensorFlow, PyTorch or JAX as a backend](https://keras.io/getting_started/#configuring-your-backend).
-TensorFlow or JAX are not required for the course, but it can be useful in the future.
-
-We recommend that you keep a lightweight installation. Set the environment variable
-`KERAS_BACKEND` to `torch` to use PyTorch as the backend for Keras, **before running any other commands** in Python console or Jupyter Lab, as follows:
-
-```python
-import os
-
-os.environ["KERAS_BACKEND"] = "torch"
-```
-
-:::
+###### PyTorch
 
 ::: spoiler
 
 ### On Linux/macOs
 
 ```shell
-python3 -m pip install jupyter seaborn scikit-learn pandas keras pydot torch torchinfo torchmetrics torchvision
+python3 -m pip install jupyter seaborn scikit-learn pandas torchinfo torchmetrics torch torchvision
 ```
-
-Note for MacOS users: there is a package `tensorflow-metal` which accelerates the training of machine learning models with TensorFlow on a recent Mac with a Silicon chip (M1/M2/M3).
-However, the installation is currently broken in the most recent version (as of January 2025), see the [developer forum](https://developer.apple.com/forums/thread/772147).
 
 :::
 
@@ -111,14 +94,52 @@ However, the installation is currently broken in the most recent version (as of 
 ### On Windows
 
 ```shell
-py -m pip install jupyter seaborn scikit-learn pandas keras pydot torch torchinfo torchmetrics torchvision
+py -m pip install jupyter seaborn scikit-learn pandas torchinfo torchmetrics torch torchvision
 ```
 
 :::
 
+If you have a GPU, you might benefit from following [the official commands from PyTorch](https://pytorch.org/get-started/locally/)
+for installing the `torch` and `torchvision` packages.
+
+<!-- end-tab --><!-- end-tab -->
+
+###### Keras
+
+::: spoiler
+
+### On Linux/macOs
+
+```shell
+python3 -m pip install jupyter seaborn scikit-learn pandas keras tensorflow pydot
+```
+
+:::
+
+::: spoiler
+
+### On Windows
+
+```shell
+py -m pip install jupyter seaborn scikit-learn pandas keras tensorflow pydot
+```
+
+:::
+
+In this course, for the Keras track, we will be using the TensorFlow backend.
+[Keras can also use either PyTorch or JAX as a backend](https://keras.io/getting_started/#configuring-your-backend).
+
+Note for MacOS users: there is a package `tensorflow-metal` which accelerates the training of machine learning models with TensorFlow on a recent Mac with a Silicon chip (M1/M2/M3).
+However, the installation is currently broken in the most recent version (as of January 2025), see the [developer forum](https://developer.apple.com/forums/thread/772147).
+
+
 An [optional challenge in episode 2](./2-keras.md) requires installation of Graphviz
 and instructions for doing that can be found
 [by following this link](https://graphviz.org/download/).
+
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
 
 ## Starting Jupyter Lab
 
@@ -138,6 +159,37 @@ jupyter lab
 ## Check your setup
 To check whether all packages installed correctly, start a jupyter notebook in jupyter lab as
 explained above. Run the following lines of code:
+
+:::: group-tab
+
+### PyTorch
+
+```python
+import sklearn
+print('sklearn version: ', sklearn.__version__)
+
+import seaborn
+print('seaborn version: ', seaborn.__version__)
+
+import pandas
+print('pandas version: ', pandas.__version__)
+
+import torchinfo
+print('torchinfo version: ', torchinfo.__version__)
+
+import torch
+print('PyTorch version: ', torch.__version__)
+```
+
+This should output the versions of all required packages without giving errors.
+Most versions will work fine with this lesson, but:
+- For PyTorch, the minimum version is 2.1.0
+- For sklearn, the minimum version is 1.2.2
+
+<!-- end-tab -->
+
+### Keras
+
 ```python
 import sklearn
 print('sklearn version: ', sklearn.__version__)
@@ -151,21 +203,29 @@ print('pandas version: ', pandas.__version__)
 import keras
 print('Keras version: ', keras.__version__)
 
-import torch
-print('PyTorch version: ', torch.__version__)
+import tensorflow
+print('Tensorflow version: ', tensorflow.__version__)
+
 ```
 
 This should output the versions of all required packages without giving errors.
 Most versions will work fine with this lesson, but:
-- For Keras, the minimum version is 3.0
-- For PyTorch, the minimum version is 2.1.0
+- For Keras and Tensorflow, the minimum version is 2.12.0
 - For sklearn, the minimum version is 1.2.2
+
+<!-- end-tab -->
+
+::::
 
 ## Fallback option: cloud environment
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mimer-ai/deep-learning-intro/scaffolds)
 
 If a local installation does not work for you, it is also possible to run this lesson in [Binder Hub](https://mybinder.org/v2/gh/mimer-ai/deep-learning-intro/scaffolds). This should give you an environment with all the required software and data to run this lesson, nothing which is saved will be stored, please copy any files you want to keep. Note that if you are the first person to launch this in the last few days it can take several minutes to startup. The second person who loads it should find it loads in under a minute. Instructors who intend to use this option should start it themselves shortly before the workshop begins.
+
+::: note
+Training deep-learning models can take a long time if you are using Binder and you may need to reduce the number of epochs.
+:::
 
 **Alternatively** you can use [Google colab](https://colab.research.google.com/). If you open a jupyter notebook here, most of the required packages are already pre-installed. Note that google colab uses jupyter notebook instead of Jupyter Lab.
 
