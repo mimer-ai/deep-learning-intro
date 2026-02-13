@@ -711,7 +711,7 @@ To apply early stopping during training it is easiest to use Keras `EarlyStoppin
 This allows to define the condition of when to stop training. In our case we will say when the validation loss is lowest.
 However, since we have seen some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training if the validation loss has not gone down for 10 epochs.
 ```python
-from keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping
 
 earlystopper = EarlyStopping(
     monitor='val_loss',
@@ -960,7 +960,7 @@ We can use *tensorboard*, a framework that keeps track of our experiments and sh
 Tensorboard is included in our tensorflow installation by default.
 To use it, we first need to add a *callback* to our (compiled) model that saves the progress of training performance in a logs rectory:
 ```python
-from keras.callbacks import TensorBoard
+from tensorflow.keras.callbacks import TensorBoard
 import datetime
 log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") # You can adjust this to add a more meaningful model name
 tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
