@@ -27,14 +27,18 @@ def patch(file: Path) -> str:
 
 pattern_keras_or_pytorch_heading = re.compile(
     r"""
-        ^(\#\#\#)  # 1. level-3 heading markup
+        ^(\#{3,6})  # 1. level-3 to 6 heading markup
         \s*
         ((?:Keras|PyTorch))  # 2. heading text
         $  # end of line
     """,
     flags=re.X | re.M,
 )
-replace_with_group_tab = r":::{group-tab} \2"
+def replace_with_group_tab(m: re.Match):
+    if m:
+        nb_hash = len((m.group(1)))
+        heading_text = m.group(2)
+        return ":" * nb_hash + "{group-tab} "+ heading_text
 
 pattern_end_tab = re.compile(
     r"""
