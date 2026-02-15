@@ -84,7 +84,7 @@ PyTorch for the intermediate-level Python users and above; and Keras for beginne
 ### On Linux/macOs
 
 ```shell
-python3 -m pip install jupyter seaborn scikit-learn pandas torchinfo torchmetrics torch torchvision
+python3 -m pip install jupyter seaborn scikit-learn pandas tqdm torchinfo torchmetrics torch torchvision
 ```
 
 :::
@@ -94,7 +94,7 @@ python3 -m pip install jupyter seaborn scikit-learn pandas torchinfo torchmetric
 ### On Windows
 
 ```shell
-py -m pip install jupyter seaborn scikit-learn pandas torchinfo torchmetrics torch torchvision
+py -m pip install jupyter seaborn scikit-learn pandas tqdm torchinfo torchmetrics torch torchvision
 ```
 
 :::
