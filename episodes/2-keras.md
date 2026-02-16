@@ -1254,6 +1254,13 @@ stage without having to retrain it.
 
 In Keras, this can be done by using the `save` method of the model.
 It takes a string as a parameter which is the path of a directory where the model is stored.
+However, we are also using the `RobustScaler` from `sklearn` to scale the data, thus we also need it in inference. An efficient way to do this is to use the pickler from `joblib`. Thus the whole pipeline can be serialised to disk in the following manner:
+
+```python
+import joblib
+
+joblib.dump(feature_scaler, 'penguins_scaler.gz')
+```
 
 ```python
 model.save('my_first_model.keras')
@@ -1263,13 +1270,14 @@ This saved model can be loaded again by using the `load_model` method as follows
 
 ```python
 pretrained_model = keras.models.load_model('my_first_model.keras')
+pretrained_scaler = joblib.load('penguins_scaler.gz')
 ```
 
 This loaded model can be used as before to predict.
 
 ```python
 # use the pretrained model here
-y_pretrained_pred = pretrained_model.predict(X_test)
+y_pretrained_pred = pretrained_model.predict(pretrained_scaler.transform(X_test))
 pretrained_prediction = pd.DataFrame(y_pretrained_pred, columns=target.columns.values)
 
 # idxmax will select the column for each row with the highest value
