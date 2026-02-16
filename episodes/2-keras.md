@@ -1,11 +1,11 @@
 ---
-title: "Classification by a neural network using Keras"
+title: "Classification by a neural network using Pytorch/Keras"
 teaching: 60
 exercises: 50
 ---
 
 ::: questions
-- How do I compose a neural network using Keras?
+- How do I compose a neural network using Pytorch/Keras?
 - How do I train this network on a dataset?
 - How do I get insight into learning process?
 - How do I measure the performance of the network?
@@ -15,17 +15,17 @@ exercises: 50
 - Use the deep learning workflow to structure the notebook
 - Explore the dataset using pandas and seaborn
 - Identify the inputs and outputs of a deep neural network.
-- Use one-hot encoding to prepare data for classification in Keras
+- Use one-hot encoding to prepare data for classification in Pytorch/Keras
 - Describe a fully connected layer
-- Implement a fully connected layer with Keras
-- Use Keras to train a small fully connected network on prepared data
+- Implement a fully connected layer with Pytorch/Keras
+- Use Pytorch/Keras to train a small fully connected network on prepared data
 - Interpret the loss curve of the training process
 - Use a confusion matrix to measure the trained networks' performance on a test set
 :::
 
 
 ## Introduction
-In this episode we will learn how to create and train a neural network using Keras to solve a simple classification task.
+In this episode we will learn how to create and train a neural network using PyTorch or Keras to solve a simple classification task.
 
 The goal of this episode is to quickly get your hands dirty in actually defining and training a neural network,
 without going into depth of how neural networks work on a technical or mathematical level.
@@ -256,7 +256,7 @@ C: 3, one for each output variable class
 ::::
 
 ### Split data into training and test set
-Finally, we will split the dataset into a training set and a test set.
+Then, we will split the dataset into a training set and a test set.
 As the names imply we will use the training set to train the neural network,
 while the test set is kept separate.
 We will use the test set to assess the performance of the trained neural network
@@ -292,6 +292,21 @@ Comparing evaluation metrics between experiments run on different data splits is
 because the accuracy of a model depends on the data used to train and test it.
 :::
 
+
+### Scale the input features
+If you take a look back at the initial data inspection, you can see that the various features have different scales. `bill_length_mm` and `bill_depth_mm` are in the order of 10^1^, while `flipper_length_mm` and `body_mass_g` are in the order of 10^2^ and 10^3^ respectively. Machine learning models work best when all features present similar scales, with values centered around zero.
+
+Therefore, it is good practice to scale the input features to bring all of them to a similar range. `scikit-learn` offers several convienent scaler classes to do this.
+In this case, we use `RobustScaler`, which provides a good default that is suitable for a variety of datasets. In particular, as the name suggests, it is robust to "outliers", i.e. entries in the dataset that present abnormal values. The `scikit-learn` documentation provides a detailed comparison of the [effects of different scalers on data with outliers](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html).
+
+```python
+from sklearn.preprocessing import RobustScaler
+
+feature_scaler = RobustScaler()
+X_train_scaled = feature_scaler.fit_transform(X_train)
+X_test_scaled = feature_scaler.transform(X_test)
+```
+
 ::: instructor
 ## BREAK
 This is a good time for switching instructor and/or a break.
@@ -299,7 +314,24 @@ This is a good time for switching instructor and/or a break.
 
 ## 4. Build an architecture from scratch
 
-### Keras for neural networks
+### Import the deep learning framework
+
+::::::: group-tab
+
+###### PyTorch
+
+PyTorch is a popular deep learning framework designed to enable developers to implement any type of neural network in environments ranging from academic research to industrial applications.
+Thus, PyTorch includes functions and classes to define deep learning models, cost functions and optimizers (optimizers are used to train a model).
+
+Before we move on to the next section of the workflow we need to make sure we have PyTorch imported.
+We do this as follows:
+```python
+import torch
+```
+
+<!-- end-tab --><!-- end-tab -->
+
+###### Keras
 
 Keras is a machine learning framework with ease of use as one of its main features.
 It is part of the tensorflow python package and can be imported using `from tensorflow import keras`.
@@ -312,12 +344,40 @@ We do this as follows:
 from tensorflow import keras
 ```
 
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
+
+### Set the seeds
+
 For this episode it is useful if everyone gets the same results from their training.
 Keras uses a random number generator at certain points during its execution.
-Therefore we will need to set two random seeds, one for numpy and one for tensorflow:
+
+::::::: group-tab
+
+###### PyTorch
+
 ```python
+from numpy.random import seed
+seed(1)
+
+torch.manual_seed(2)
+```
+
+<!-- end-tab --><!-- end-tab -->
+
+###### Keras
+
+```python
+from numpy.random import seed
+seed(1)
+
 keras.utils.set_random_seed(2)
 ```
+
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
 
 ::: callout
 
@@ -407,10 +467,10 @@ Keras distinguishes between two types of weights, namely:
 
 - trainable parameters: these are weights of the neurons that are modified when we train the model in order to minimize our loss function (we will learn about loss functions shortly!).
 
-- non-trainable parameters: these are weights of the neurons that are not changed when we train the model. These could be for many reasons - using a pre-trained model, choice of a particular filter for a convolutional neural network, and statistical weights for batch normalization are some examples.  
+- non-trainable parameters: these are weights of the neurons that are not changed when we train the model. These could be for many reasons - using a pre-trained model, choice of a particular filter for a convolutional neural network, and statistical weights for batch normalization are some examples.
 
 If these reasons are not clear right away, don't worry! In later episodes of this course, we will touch upon a couple of these concepts.
-::: 
+:::
 
 
 ::: instructor
@@ -487,9 +547,9 @@ Model: "functional"
  Non-trainable params: 0 (0.00 B)
 
 ```
-The model has 83 trainable parameters. Each of the 10 neurons in the in the `dense` hidden layer is connected to each of 
-the 4 inputs in the input layer resulting in 40 weights that can be trained. The 10 neurons in the hidden layer are also 
-connected to each of the 3 outputs in the `dense_1` output layer, resulting in a further 30 weights that can be trained. 
+The model has 83 trainable parameters. Each of the 10 neurons in the in the `dense` hidden layer is connected to each of
+the 4 inputs in the input layer resulting in 40 weights that can be trained. The 10 neurons in the hidden layer are also
+connected to each of the 3 outputs in the `dense_1` output layer, resulting in a further 30 weights that can be trained.
 By default `Dense` layers in Keras also contain 1 bias term for each neuron, resulting in a further 10 bias values for the
 hidden layer and 3 bias terms for the output layer. `40+30+10+3=83` trainable parameters.
 
@@ -828,7 +888,7 @@ many hyperparameter and model architecture choices.
 We will go into more depth of these choices in later episodes.
 For now it is important to realize that the parameters we chose were
 somewhat arbitrary and more careful consideration needs to be taken to
-pick hyperparameter values. 
+pick hyperparameter values.
 
 
 ## 10. Share model
