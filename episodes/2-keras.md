@@ -393,7 +393,7 @@ import torch
 ### Set the seeds
 
 For this episode it is useful if everyone gets the same results from their training.
-Keras uses a random number generator at certain points during its execution.
+Keras and PyTorch uses a random number generator at certain points during its execution.
 
 ::::::: group-tab
 
@@ -506,56 +506,7 @@ a Keras model which facilitates training the network.
 model = keras.Model(inputs=inputs, outputs=output_layer)
 ```
 
-<!-- end-tab --><!-- end-tab -->
-
-###### PyTorch
-
-In Pytorch, the architecture of a neural network is defined in a class that
-inherits from `torch.nn.Module`. The network itself is created by stacking
-layers and linking them together. In this episode, we will only use one type of
-layer called *fully connected* or *dense*, which Pytorch dubs `Linear`; the
-number of neurons is prescribed by the user. For fully connected layers, each
-neuron gets an edge (i.e. connection) to **all** of the input neurons and
-**all** of the output neurons. The hidden layer in the image in the
-introduction of this episode is a fully connected layer. A possible
-architecture for a penguin classifier using one hidden layer is proposed below:
-
-```python
-class PenguinModel(torch.nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.hidden_layer = torch.nn.Linear(X_train.shape[1], 10)
-        self.output_layer = torch.nn.Linear(10, 3)
-
-    def forward(self, x):
-        x = self.hidden_layer(x)
-        x = torch.nn.functional.relu(x)
-        x = self.output_layer(x)
-        x = torch.nn.functional.softmax(x, dim=1)
-        return x
-model = PenguinModel()
-# Alternative syntax for quickly defining a simple model
-
-# model = torch.nn.Sequential(
-#     torch.nn.Linear(X_train.shape[1], 10),
-#     torch.nn.ReLU(),
-#     torch.nn.Linear(10, 3),
-#     torch.nn.Softmax()
-# ).to(device)
-```
-
-In Pytorch, the layers are defined in the constructor of the class. The dimension of the input is defined implicitly by the size of the hidden layer (`torch.nn.Linear(X_train.shape[1], 10)`). The number of neurons is prescribed in the second parameter of the linear layer (10); this quantity is a hyperparameter that we have to choose and tune based on the specific task the network has to perform. We will get back to this in the section on refining the model. The output layer is then constructed based on the size of the hidden layer (10) and the number of classes (3), since we are using one-hot encoding.
-What happens to the input throughout the network is defined in the `forward()` method: it goes through the first layer, which is then activated by a `ReLU`, which is commonly used in deep neural networks. After that we have the output layer with three neurons (since we have three classes). This layer uses a `softmax()` activation, which makes sure that the three output neurons produce values in the range (0,1) and that their sum is 1. These values can be interpreted as the `probability` that the sample belongs to a certain class. For simpler models like this one, the architecture can be defined also using `torch.nn.Sequential` without creating a whole new class.
-
-<!-- end-tab --><!-- end-tab -->
-
-:::::::
-
 Now that the neural network is created, we can inspect it:
-
-::::::: group-tab
-
-###### Keras
 
 ```python
 model.summary()
@@ -565,10 +516,44 @@ model.summary()
 
 ###### PyTorch
 
+In Pytorch, the architecture of a neural network is defined in a class that
+inherits from `torch.nn.Module`. The network itself is created by stacking
+layers and linking them together. In this episode, we will only use one type of
+layer called *fully connected* or *dense*, which PyTorch dubs `Linear`; the
+number of neurons is prescribed by the user. For fully connected layers, each
+neuron gets an edge (i.e. connection) to **all** of the input neurons and
+**all** of the output neurons. The hidden layer in the image in the
+introduction of this episode is a fully connected layer. A possible
+architecture for a penguin classifier using one hidden layer is proposed below:
+
+```python
+class PenguinModel(torch.nn.Module):
+    def __init__(self, input_shape):
+        super().__init__()
+        self.hidden_layer = torch.nn.Linear(input_shape, 10)
+        self.output_layer = torch.nn.Linear(10, 3)
+
+    def forward(self, x):
+        x = self.hidden_layer(x)
+        x = torch.nn.functional.relu(x)
+        x = self.output_layer(x)
+        x = torch.nn.functional.softmax(x, dim=1)
+        return x
+
+model = PenguinModel(X_train.shape[1]).to(device)
+```
+
+In Pytorch, the layers are defined in the constructor of the class. The dimension of the input is defined implicitly by the size of the hidden layer (`torch.nn.Linear(X_train.shape[1], 10)`). The number of neurons is prescribed in the second parameter of the linear layer (10); this quantity is a hyperparameter that we have to choose and tune based on the specific task the network has to perform. We will get back to this in the section on refining the model. The output layer is then constructed based on the size of the hidden layer (10) and the number of classes (3), since we are using one-hot encoding.
+
+What happens to the input throughout the network is defined in the `forward()` method: it goes through the first layer, which is then activated by a `ReLU`, which is commonly used in deep neural networks. After that we have the output layer with three neurons (since we have three classes). This layer uses a `softmax()` activation, which makes sure that the three output neurons produce values in the range (0,1) and that their sum is 1. These values can be interpreted as the `probability` that the sample belongs to a certain class. 
+
+Now that the neural network is created, we can inspect it:
+
 ```python
 from torchinfo import summary 
 summary(model, input_size=X_train.shape[1:], batch_dim=0, device=device)
 ```
+
 
 <!-- end-tab --><!-- end-tab -->
 
@@ -594,11 +579,11 @@ For optional question 3 in the challenge below named 'Visualizing the model', th
 You could choose to show and discuss the resulting visualization to the learners, so that learners who did not finish the optional exercise can also learn from the visualization of the model.
 :::
 
-:::: challenge
+::::::::: challenge
 
 ## Create the neural network
 
-With the code snippets above, we defined a Keras model with 1 hidden layer with
+With the code snippets above, we defined a model with 1 hidden layer with
 10 neurons and an output layer with 3 neurons.
 
 1. How many parameters does the resulting model have?
@@ -607,7 +592,7 @@ With the code snippets above, we defined a Keras model with 1 hidden layer with
 
 #### (optional) Visualizing the model
 
-Optionally, you can also visualize the same information as `model.summary()` in graph form.
+Optionally, you can also visualize the same information as `model.summary()` / `torchinfo.summary()` in graph form.
 This step requires the command-line tool `dot` from Graphviz installed, you installed it by following the setup instructions.
 You can check that the installation was successful by executing `dot -V` in the command line. You should get something
 as follows:
@@ -616,6 +601,9 @@ as follows:
 $ dot -V
 dot - graphviz version 2.43.0 (0)
 ```
+:::: group-tab
+
+### Keras
 
 3. (optional) Provided you have `dot` installed, execute the `plot_model` function
    as shown below.
@@ -630,7 +618,7 @@ keras.utils.plot_model(
 )
 ```
 
-#### (optional) Keras Sequential vs Functional API
+**(optional) Keras Sequential vs Functional API**
 
 So far we have used the [Functional API](https://keras.io/guides/functional_api/) of Keras.
 You can also implement neural networks using [the Sequential model](https://keras.io/guides/sequential_model/).
@@ -639,9 +627,44 @@ where each layer has **exactly one input tensor and one output tensor**.
 
 4. (optional) Use the Sequential model to implement the same network
 
-::: solution
+
+<!-- end-tab -->
+
+### PyTorch
+
+3. (optional) Provided you have `dot` and `torchview` installed, execute `draw_graph` function
+   as shown below.
+
+```python
+from torchview
+model_graph = draw_graph(model, input_size=(1, 10), expand_nested=True)
+model_graph.visual_graph
+```
+
+**(optional) PyTorch Sequential vs Object-oriented API**
+
+So far we have used the [Object-oriented API](https://docs.pytorch.org/docs/stable/generated/torch.nn.Module.html) of PyTorch.
+You can also implement neural networks using 
+[`torch.nn.Sequential`](https://docs.pytorch.org/docs/stable/generated/torch.nn.Sequential.html).
+As you can read in the documentation, the Sequential model is appropriate for **a plain stack of layers**
+where each layer has **exactly one input tensor and one output tensor**.
+
+4. (optional) Use `torch.nn.Sequential` model to implement the same network
+
+
+<!-- end-tab -->
+
+::::
+
+
+
+:::::::: solution
 
 ## Solution
+
+::::::: group-tab
+
+###### Keras
 
 Have a look at the output of `model.summary()`:
 
@@ -701,13 +724,13 @@ So in total 8 extra parameters.
 
 *The name in quotes within the string `Model: "functional"` may be different in your view; this detail is not important.*
 
-#### (optional) Visualizing the model
+**(optional) Visualizing the model**
 
 3. Upon executing the `plot_model` function, you should see the following image.
 
 ![Output of *keras.utils.plot_model()* function][plot-model]
 
-#### (optional) Keras Sequential vs Functional API
+**(optional) Keras Sequential vs Functional API**
 
 4. This implements the same model using the Sequential API:
 
@@ -722,8 +745,80 @@ model = keras.Sequential(
 ```
 
 We will use the Functional API for the remainder of this course, since it is more flexible and more explicit.
-:::
-::::
+
+<!-- end-tab --><!-- end-tab -->
+
+###### PyTorch
+
+Have a look at the output of `torchinfo.summary()`:
+
+```python
+from torchinfo import summary 
+summary(model, input_size=X_train.shape[1:], batch_dim=0, device=device)
+```
+
+```output
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+PenguinModel                             [1, 3]                    --
+├─Linear: 1-1                            [1, 10]                   50
+├─Linear: 1-2                            [1, 3]                    33
+==========================================================================================
+Total params: 83
+Trainable params: 83
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.00
+==========================================================================================
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 0.00
+==========================================================================================
+```
+
+The model has 83 trainable parameters. Each of the 10 neurons in the in the `Linear: 1-1` hidden layer is connected to each of
+the 4 inputs in the input layer resulting in 40 weights that can be trained. The 10 neurons in the hidden layer are also
+connected to each of the 3 outputs in the `Linear: 1-2` output layer, resulting in a further 30 weights that can be trained.
+By default `Linear` layers in PyTorch also contain 1 bias term for each neuron, resulting in a further 10 bias values for the
+hidden layer and 3 bias terms for the output layer. `40+30+10+3=83` trainable parameters.
+
+Note that the output shape always contains `1` as the first entry of the tuple. This is the *flexible* dimension which is used by the model when processing several samples at the same time, what is usually called a `batch`. You will learn more about batching in lesson 3.
+
+**FIXME**: *Discuss memory footprint*
+
+If you increase the number of neurons in the hidden layer the number of
+trainable parameters in both the hidden and output layer increases or
+decreases in accordance with the number of neurons added.
+Each extra neuron has 4 weights connected to the input layer, 1 bias term, and 3 weights connected to the output layer.
+So in total 8 extra parameters.
+
+**(optional) Visualizing the model**
+
+3. **FIXME**: *To be completed using* `torchview.draw_graph`.
+
+**(optional) PyTorch Sequential vs Object-oriented API**
+
+4. This implements the same model using the Sequential API:
+
+```python
+model = torch.nn.Sequential(
+    torch.nn.Linear(X_train.shape[1], 10),
+    torch.nn.ReLU(),
+    torch.nn.Linear(10, 3),
+    torch.nn.Softmax(dim=1)
+).to(device)
+```
+
+We will use the object-oriented API inheriting from `torch.nn.Module` for the remainder of this course,
+since it is more flexible and more reusable.
+
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
+
+::::::::
+:::::::::
 
 ::: callout
 
