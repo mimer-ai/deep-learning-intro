@@ -1368,10 +1368,11 @@ print(pretrained_predicted_species)
 
 - The deep learning workflow is a useful tool to structure your approach, it helps to make sure you do not forget any important steps.
 - Exploring the data is an important step to familiarize yourself with the problem and to help you determine the relavent inputs and outputs.
-- One-hot encoding is a preprocessing step to prepare labels for classification in Keras.
+- One-hot encoding is a preprocessing step to prepare labels for classification.
 - A fully connected layer is a layer which has connections to all neurons in the previous and subsequent layers.
-- keras.layers.Dense is an implementation of a fully connected layer, you can set the number of neurons in the layer and the activation function used.
+- `keras.layers.Dense` and `torch.nn.Linear` are implementations of a fully connected layer, you can set the number of neurons in the layer. In Keras, you can also set the activation function used.
 - To train a neural network with Keras we need to first define the network using layers and the Model class. Then we can train it using the model.fit function.
+- To train a neural network with PyTorch we need to first define a class inheriting from `torch.nn.Module`.Then, we define the layers in the `__init__` method and the forward pass in the `forward` method. Finally, we can train it using a custom training loop.
 - Plotting the loss curve can be used to identify and troubleshoot the training process.
 - The loss curve on the training set does not provide any information on how well a network performs in a real setting.
 - Creating a confusion matrix with results from a test set gives better insight into the network's performance.
