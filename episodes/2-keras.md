@@ -359,20 +359,6 @@ This is a good time for switching instructor and/or a break.
 
 ::::::: group-tab
 
-###### PyTorch
-
-PyTorch is a popular deep learning framework designed to enable developers to implement any type of neural network in environments ranging from academic research to industrial applications.
-Thus, PyTorch includes functions and classes to define deep learning models, cost functions and optimizers (optimizers are used to train a model).
-
-Before we move on to the next section of the workflow we need to make sure we have PyTorch imported.
-We do this as follows:
-
-```python
-import torch
-```
-
-<!-- end-tab --><!-- end-tab -->
-
 ###### Keras
 
 Keras is a machine learning framework with ease of use as one of its main features.
@@ -389,6 +375,19 @@ from tensorflow import keras
 
 <!-- end-tab --><!-- end-tab -->
 
+###### PyTorch
+
+PyTorch is a popular deep learning framework designed to enable developers to implement any type of neural network in environments ranging from academic research to industrial applications.
+Thus, PyTorch includes functions and classes to define deep learning models, cost functions and optimizers (optimizers are used to train a model).
+
+Before we move on to the next section of the workflow we need to make sure we have PyTorch imported.
+We do this as follows:
+
+```python
+import torch
+```
+
+<!-- end-tab --><!-- end-tab -->
 :::::::
 
 ### Set the seeds
@@ -397,17 +396,6 @@ For this episode it is useful if everyone gets the same results from their train
 Keras uses a random number generator at certain points during its execution.
 
 ::::::: group-tab
-
-###### PyTorch
-
-```python
-from numpy.random import seed
-seed(1)
-
-torch.manual_seed(2)
-```
-
-<!-- end-tab --><!-- end-tab -->
 
 ###### Keras
 
@@ -420,6 +408,16 @@ keras.utils.set_random_seed(2)
 
 <!-- end-tab --><!-- end-tab -->
 
+###### PyTorch
+
+```python
+from numpy.random import seed
+seed(1)
+
+torch.manual_seed(2)
+```
+
+<!-- end-tab --><!-- end-tab -->
 :::::::
 
 ::: callout
@@ -749,32 +747,37 @@ We will cover the concept of Transfer Learning in [episode 5](./5-transfer-learn
 
 ## 5. Choose a loss function and optimizer
 
-We have now designed a neural network that in theory we should be able to
-train to classify Penguins.
-However, we first need to select an appropriate loss
-function that we will use during training.
-This loss function tells the training algorithm how wrong, or how 'far away' from the true
-value the predicted value is.
+We have now designed a neural network that in theory we should be able to train
+to classify Penguins. However, we first need to select an appropriate loss
+function that we will use during training. This loss function tells the
+training algorithm how wrong, or how 'far away' from the true value the
+predicted value is.
 
-For the one-hot encoding that we selected earlier a suitable loss function is the Categorical Crossentropy loss.
-In Keras this is implemented in the `keras.losses.CategoricalCrossentropy` class.
-This loss function works well in combination with the `softmax` activation function
-we chose earlier.
-The Categorical Crossentropy works by comparing the probabilities that the
-neural network predicts with 'true' probabilities that we generated using the one-hot encoding.
-This is a measure for how close the distribution of the three neural network outputs corresponds to the distribution of the three values in the one-hot encoding.
-It is lower if the distributions are more similar.
+For the one-hot encoding that we selected earlier a suitable loss function is
+the Categorical Crossentropy loss. In Keras this is implemented in the
+`keras.losses.CategoricalCrossentropy` class, whereas Pytorch uses
+`torch.nn.CrossEntropyLoss`. This loss function works well in combination with
+the `softmax` activation function we chose earlier. The Categorical
+Crossentropy works by comparing the probabilities that the neural network
+predicts with 'true' probabilities that we generated using the one-hot
+encoding. This is a measure for how close the distribution of the three neural
+network outputs corresponds to the distribution of the three values in the
+one-hot encoding. It is lower if the distributions are more similar.
 
-For more information on the available loss functions in Keras you can check the
-[documentation](https://www.tensorflow.org/api_docs/python/tf/keras/losses).
+For more information on the available loss functions in the two frameworks you can check the
+documentation for [Keras](https://www.tensorflow.org/api_docs/python/tf/keras/losses) and [Pytorch](https://docs.pytorch.org/docs/stable/nn.html#loss-functions) respectively.
 
 Next we need to choose which optimizer to use and, if this optimizer has parameters, what values
 to use for those. Furthermore, we need to specify how many times to show the training samples to the optimizer.
 
-Once more, Keras gives us plenty of choices all of which have their own pros and cons,
+Once more, both frameworks give us plenty of choices all of which have their own pros and cons,
 but for now let us go with the widely used [Adam optimizer](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Adam).
 Adam has a number of parameters, but the default values work well for most problems.
 So we will use it with its default parameters.
+
+::::::: group-tab
+
+###### Keras
 
 Combining this with the loss function we decided on earlier we can now compile the
 model using `model.compile`.
@@ -784,11 +787,36 @@ Compiling the model prepares it to start the training.
 model.compile(optimizer='adam', loss=keras.losses.CategoricalCrossentropy())
 ```
 
+<!-- end-tab --><!-- end-tab -->
+
+###### PyTorch
+
+In Pytorch, we define the loss function and optimizers. Moreover, we need DataLoaders to feed the train dataset into the neural network. The model is then set in "training mode" using `model.train()`:
+
+```python
+
+loss_fn = torch.nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters())
+train_dataset = torch.utils.data.TensorDataset(
+    torch.tensor(X_train_scaled, dtype = torch.float),
+    torch.tensor(y_train.values, dtype = torch.float)
+)
+train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size = 128, shuffle = True)
+model.train()
+```
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
+
 ## 6. Train model
 
 We are now ready to train the model.
 
-Training the model is done using the `fit` method, it takes the input data and
+::::::: group-tab
+
+###### Keras
+
+In Keras, training the model is done using the `fit` method, it takes the input data and
 target data as inputs and it has several other parameters for certain options
 of the training.
 Here we only set a different number of `epochs`.
@@ -809,6 +837,35 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 ```
 
 ![][training_curve]{alt="Plot of the Cross Entropy loss, showing a sharp decrease in the first around 10 epochs, and converging at a low value afterwards."}
+
+<!-- end-tab --><!-- end-tab -->
+
+###### PyTorch
+
+In Pytorch, the training loop has to be defined explicitly:
+
+```python
+loss = []
+for epoch in range(100):
+    for X_batch, y_batch in train_dataloader:
+        y_pred = model(X_batch)
+        loss = loss_fn(y_pred, y_batch)
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+    loss_history.append(loss.item())
+    print(f'Epoch {epoch+1:>3d} completed; last batch loss: {loss.item():.4f}')
+```
+
+The training loss can then be plotted:
+
+```python
+sns.lineplot(x=range(len(loss_history)), y=loss_history)
+```
+
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
 
 ::: callout
 
@@ -869,7 +926,11 @@ We will take a closer look at training curves in the next episode. Some of the c
 ## 7. Perform a prediction/classification
 
 Now that we have a trained neural network, we can use it to predict new samples
-of penguin using the `predict` function.
+of penguins.
+
+::::::: group-tab
+
+###### Keras
 
 We will use the neural network to predict the species of the test set
 using the `predict` function.
@@ -900,6 +961,36 @@ prediction
 
 Remember that the output of the network uses the `softmax` activation function and has three
 outputs, one for each species. This dataframe shows this nicely.
+
+<!-- end-tab --><!-- end-tab -->
+
+###### PyTorch
+
+To run inference (i.e. make predictions) with Pytorch, we need to set the model in "evaluation mode".
+Moreover, we wrap the prediction in a `torch.no_grad()` context so that the execution is faster (more on that later).
+
+```python
+model.eval()
+with torch.no_grad():
+    y_pred = model(torch.tensor(X_test_scaled, dtype = torch.float))
+prediction = pd.DataFrame(y_pred.to('cpu'), columns=target.columns)
+prediction
+  Adelie  Chinstrap  Gentoo
+0  0.786800  0.108887  0.104313
+1  0.874215  0.083492  0.042294
+2  0.903556  0.066898  0.029546
+3  0.126868  0.097586  0.775546
+4  0.628735  0.208464  0.162801
+...  ...  ...  ...
+64  0.900963  0.073662  0.025375
+65  0.926656  0.052395  0.020949
+66  0.840132  0.116230  0.043638
+67  0.097195  0.085259  0.817547
+68  0.043282  0.044229  0.912489
+```
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
 
 We now need to transform this output to one penguin species per sample.
 We can do this by looking for the index of highest valued output and converting that
@@ -1044,7 +1135,12 @@ pick hyperparameter values.
 
 It is very useful to be able to use the trained neural network at a later
 stage without having to retrain it.
-This can be done by using the `save` method of the model.
+
+::::::: group-tab
+
+###### Keras
+
+In Keras, this can be done by using the `save` method of the model.
 It takes a string as a parameter which is the path of a directory where the model is stored.
 
 ```python
@@ -1084,6 +1180,45 @@ print(pretrained_predicted_species)
 Length: 69, dtype: object
 ```
 
+<!-- end-tab --><!-- end-tab -->
+
+###### PyTorch
+
+In Pytorch, we can use the `torch.save()` method to save the architecture (and its weights and biases) to disk.
+However, we are also using the `RobustScaler` from `sklearn` to scale the data, thus we also need it in inference. An efficient way to do this is to use the pickler from `joblib`. Thus the whole pipeline can be serialised to disk in the following manner:
+
+```python
+import joblib
+
+joblib.dump(feature_scaler, 'penguins_scaler.gz')
+torch.save(model.state_dict(), 'penguins_classification.pt')
+```
+
+Then we can reload it from disk using the `load_state_dict` method for the network and the `joblib.load()` method for the scaler:
+
+```python
+pretrained_model = PenguinModel()
+pretrained_model.load_state_dict(torch.load('penguins_classification.pt'))
+pretrained_scaler = joblib.load('penguins_scaler.gz')
+```
+
+The inference is done exactly as before:
+
+```python
+model.eval()
+with torch.no_grad():
+    X_test_scaled = torch.tensor(pretrained_scaler.transform(X_test), dtype = torch.float)
+    y_pretrained_pred = model(X_test_scaled)
+pretrained_prediction = pd.DataFrame(y_pretrained_pred, columns=target.columns.values)
+
+# idxmax will select the column for each row with the highest value
+pretrained_predicted_species = pretrained_prediction.idxmax(axis="columns")
+print(pretrained_predicted_species)
+```
+
+<!-- end-tab --><!-- end-tab -->
+
+:::::::
 [palmer-penguins]: fig/palmer_penguins.png "Palmer Penguins"
 {alt='Illustration of the three species of penguins found in the Palmer Archipelago, Antarctica: Chinstrap, Gentoo and Adele'}
 
