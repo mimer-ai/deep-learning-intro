@@ -196,6 +196,38 @@ In our example we want to predict the sunshine hours in Basel (or any other plac
 
 We compose a network of two hidden layers to start off with something. We go by a scheme with 100 neurons in the first hidden layer and 50 neurons in the second layer. As activation function we settle on the `relu` function as a it is very robust and widely used. To make our live easier later, we wrap the definition of the network in a function called `create_nn()`.
 
+:::: group-tab
+
+### PyTorch
+
+```python
+import torch.nn.functional as F
+import torch.nn as nn
+
+class WeatherPredictionModel(nn.Module):
+    def __init__(self, input_shape, hidden1=100, hidden2=50):
+        super().__init__()
+
+        self.hidden_layer1 = nn.Linear(input_shape, hidden1)
+        self.hidden_layer2 = nn.Linear(hidden1, hidden2)
+        self.output_layer = nn.Linear(hidden2, 1)
+
+    def forward(self, x):
+        x = self.hidden_layer1(x)
+        x = F.relu(x)
+        x = self.hidden_layer2(x)
+        x = F.relu(x)
+        x = self.output_layer(x)
+        return x
+
+model = WeatherPredictionModel(X_train.shape[1])
+
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 ```python
 from tensorflow import keras
 keras.utils.set_random_seed(2)
@@ -216,6 +248,10 @@ def create_nn(input_shape):
 model = create_nn(input_shape=(X_data.shape[1],))
 ```
 
+<!-- end-tab -->
+
+::::
+
 The shape of the input layer has to correspond to the number of features in our data: `89`. We use `X_data.shape[1]` to obtain this value dynamically
 
 The output layer here is a dense layer with only 1 node. And we here have chosen to use *no activation function*.
@@ -223,7 +259,56 @@ While we might use *softmax* for a classification task, here we do not want to r
 
 In addition, we have here chosen to write the network creation as a function so that we can use it later again to initiate new models.
 
-Let us check how our model looks like by calling the `summary` method.
+Let us check how our model looks like by using a `summary` method.
+
+:::: group-tab
+
+### PyTorch
+
+```python
+print(model)
+```
+```output
+
+
+WeatherPredictionModel(
+  (hidden_layer1): Linear(in_features=89, out_features=100, bias=True)
+  (hidden_layer2): Linear(in_features=100, out_features=50, bias=True)
+  (output_layer): Linear(in_features=50, out_features=1, bias=True)
+)
+
+```
+
+```python
+from torchinfo import summary
+
+example_batch_size = 32
+summary(model, input_size=(example_batch_size, X_train.shape[1]))
+```
+```output
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+WeatherPredictionModel                   [32, 1]                   --
+├─Linear: 1-1                            [32, 100]                 9,000
+├─Linear: 1-2                            [32, 50]                  5,050
+├─Linear: 1-3                            [32, 1]                   51
+==========================================================================================
+Total params: 14,101
+Trainable params: 14,101
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.45
+==========================================================================================
+Input size (MB): 0.01
+Forward/backward pass size (MB): 0.04
+Params size (MB): 0.06
+Estimated Total Size (MB): 0.11
+==========================================================================================
+```
+
+<!-- end-tab -->
+
+### Keras
 
 ```python
 model.summary()
@@ -250,8 +335,12 @@ Model: "weather_prediction_model"
  Non-trainable params: 0 (0.00 B)
 ```
 
-
 When compiling the model we can define a few very important aspects. We will discuss them now in more detail.
+
+<!-- end-tab -->
+
+::::
+
 
 ## Intermezzo: How do neural networks learn?
 In the introduction we learned about the loss function: it quantifies the total error of the predictions made by the model.
@@ -327,6 +416,18 @@ Answer the following questions:
 ### Loss function
 The loss is what the neural network will be optimized on during training, so choosing a suitable loss function is crucial for training neural networks.
 In the given case we want to stimulate that the predicted values are as close as possible to the true values. This is commonly done by using the *mean squared error* (mse) or the *mean absolute error* (mae), both of which should work OK in this case. Often, mse is preferred over mae because it "punishes" large prediction errors more severely.
+
+:::: group-tab
+
+### PyTorch
+
+In PyTorch the is implemented in the `torch.nn.MSELoss` class (see PyTorch documentation: https://docs.pytorch.org/docs/stable/nn.html#loss-functions).
+
+
+<!-- end-tab -->
+
+###  Keras
+
 In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g.
 
 <!--cce:skip-->
@@ -334,17 +435,37 @@ In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see K
 model.compile(loss='mse')
 ```
 
+<!-- end-tab -->
+
+::::
 
 ### Optimizer
 
 Somewhat coupled to the loss function is the *optimizer* that we want to use.
 The *optimizer* here refers to the algorithm with which the model learns to optimize on the provided loss function. A basic example for such an optimizer would be *stochastic gradient descent*. For now, we can largely skip this step and pick one of the most common optimizers that works well for most tasks: the *Adam optimizer*. Similar to activation functions, the choice of optimizer depends on the problem you are trying to solve, your model architecture and your data. *Adam* is a good starting point though, which is why we chose it.
 
+
+:::: group-tab
+
+### PyTorch
+
+```python
+optimizer = optim.Adam(model.parameters())
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 <!--cce:skip-->
 ```python
 model.compile(optimizer='adam',
               loss='mse')
 ```
+
+<!-- end-tab -->
+
+::::
 
 ### Metrics
 
@@ -354,8 +475,27 @@ However, when models become more complicated then also the loss functions often 
 That is why it is good practice to monitor the training process with additional, more intuitive metrics.
 They are not used to optimize the model, but are simply recorded during training.
 
+:::: group-tab
+
+### PyTorch
+
+In pure PyTorch any additional metrics can be computed from the predictions during the training process. Here we import [`metrics`](https://scikit-learn.org/stable/api/sklearn.metrics.html#module-sklearn.metrics) from `sklearn` to avoid implementing and testing them ourselves. Another popular option is [`torchmetrics`](https://lightning.ai/docs/torchmetrics/stable/).
+Here we could for instance choose [mean absolute error](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error) or [*root mean squared error*](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.root_mean_squared_error.html#sklearn.metrics.root_mean_squared_error) which unlike the *MSE* have the same units as the predicted values. We choose the latter.
+
+```python
+from sklearn import metrics
+for i, batch in enumerate(data_loader):
+    #  train
+    running_rmse += metrics.root_mean_squared_error(y_batch, y_pred)
+train_rmse = running_rmse / len(data_loader)
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 With Keras, such additional metrics can be added via `metrics=[...]` parameter and can contain one or multiple metrics of interest.
-Here we could for instance chose `mae` ([mean absolute error](https://glosario.carpentries.org/en/#mean_absolute_error)), or the the [*root mean squared error* (RMSE)](https://glosario.carpentries.org/en/#root_mean_squared_error) which unlike the *mse* has the same units as the predicted values. For the sake of units, we choose the latter.
+Here we could for instance choose `mae` ([mean absolute error](https://glosario.carpentries.org/en/#mean_absolute_error)), or the [*root mean squared error* (RMSE)](https://glosario.carpentries.org/en/#root_mean_squared_error) which unlike the *mse* have the same units as the predicted values. We choose the latter.
 
 ```python
 model.compile(optimizer='adam',
@@ -374,12 +514,119 @@ compile_model(model)
 
 With this, we complete the compilation of our network and are ready to start training.
 
+<!-- end-tab -->
+
+::::
+
 ## 6. Train the model
 
 Now that we created and compiled our dense neural network, we can start training it.
 We add the `batch_size` parameter that defines -- as discussed above -- how many samples from the training data will be used to estimate the error gradient before the model weights are updated.
 Larger batches will produce better, more accurate gradient estimates but also less frequent updates of the weights.
 Here we are going to use a batch size of 32 which is a common starting point.
+
+:::: group-tab
+
+### PyTorch
+
+In pure PyTorch, we can write a short training loop to compute the prediction of our model for each batch in the `data_loader`. With the `prediction`, the true `label`, and the `loss function` we can compute the `loss value`. With the `loss value`, the `optimizer` can then perform backpropagation.
+
+```python
+def train_epoch(model, data_loader, loss_fn, optimizer, progress_desc):
+    """Training the model for one epoch."""
+    model.train()
+    running_loss = 0.0
+    running_rmse = 0.0
+
+    if progress_desc:
+        pbar = tqdm(data_loader, desc=progress_desc)
+    else:
+        pbar = data_loader
+
+    for i, (X_batch, y_batch) in enumerate(pbar):
+        X_batch = X_batch.to(device)
+        y_batch = y_batch.to(device)
+
+        # Zero the gradients
+        optimizer.zero_grad()
+
+        # Forward pass and make predictions
+        y_pred = model(X_batch)
+
+        # Compute loss
+        loss = loss_fn(y_pred.squeeze(), y_batch)
+
+        # Backward pass and update weights using the optimizer
+        loss.backward()
+        optimizer.step()
+
+        running_loss += loss.item()
+        running_rmse += metrics.root_mean_squared_error(y_batch, y_pred)
+
+        if progress_desc:
+            pbar.set_postfix({"loss": running_loss / (i + 1), "rmse": running_rmse / (i + 1)})
+
+    train_loss = running_loss / len(data_loader)
+    train_rmse = running_rmse / len(data_loader)
+    return train_loss, train_rmse
+```
+
+We should also regularly evaluate our model on the validation dataset.
+We could e.g. do this after a certain number of training iterations.
+Here we choose to do it after every completed epoch.
+
+```python
+def eval_epoch(model, data_loader, loss_fn, accumulate=False):
+    """Evaluate the model for one epoch for testing / validation data.
+    No gradients are computed, no backpropagation.
+
+    """
+    model.eval()
+    running_loss = 0.0
+    running_rmse = 0.0
+    y_true_tensor = torch.tensor([]).to(device)
+    y_pred_tensor = torch.tensor([]).to(device)
+
+    with torch.no_grad():
+        for X_batch, y_batch in data_loader:
+            X_batch = X_batch.to(device)
+            y_batch = y_batch.to(device)
+
+            y_pred = model(X_batch)
+            loss = loss_fn(y_pred.squeeze(), y_batch)
+
+            running_loss += loss.item()
+            running_rmse += metrics.root_mean_squared_error(y_batch, y_pred)
+
+            if accumulate:
+                y_true_tensor = torch.cat((y_true_tensor, y_batch))
+                y_pred_tensor = torch.cat((y_pred_tensor, y_pred))
+
+    eval_loss = running_loss / len(data_loader)
+    eval_rmse = running_rmse / len(data_loader)
+    return eval_loss, eval_rmse, y_true_tensor.cpu(), y_pred_tensor.cpu()
+```
+
+To visualize the training process, we keep track of these metrics in a `history` `dict`:
+```python
+
+
+model = model.to(device)
+
+history = {'loss': [], 'root_mean_squared_error': []}
+epochs = 200
+
+for epoch in range(epochs):
+    loss, rmse = train_epoch(model, train_dl, loss_fn, optimizer, f"Epoch {epoch+1}/{epochs}")
+    history['loss'].append(loss)
+    history['root_mean_squared_error'].append(rmse)
+
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 ```python
 history = model.fit(X_train, y_train,
                     batch_size=32,
@@ -387,8 +634,37 @@ history = model.fit(X_train, y_train,
                     verbose=2)
 ```
 
+<!-- end-tab -->
+
+::::
+
 We can plot the training process using the `history` object returned from the model training.
 We will create a function for it, because we will make use of this more often in this lesson!
+
+:::: group-tab
+
+### PyTorch
+
+```python
+def plot_history(history, metrics):
+    """
+    Plot the training history
+
+    Args:
+        history (dict): Dictionary containing training history
+        metrics (str, list): Metric or a list of metrics to plot
+    """
+    history_df = pd.DataFrame(history)
+    sns.lineplot(data=history_df[metrics])
+    plt.xlabel("epochs")
+    plt.ylabel("metric")
+
+plot_history(history, 'root_mean_squared_error')
+```
+
+<!-- end-tab -->
+
+###  Keras
 ```python
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -409,6 +685,10 @@ def plot_history(history, metrics):
 plot_history(history, 'root_mean_squared_error')
 ```
 
+<!-- end-tab -->
+
+::::
+
 ![](fig/03_training_history_1_rmse.png){alt='Plot of the RMSE over epochs for the trained model that shows a decreasing error metric.'}
 
 This looks very promising! Our metric "root_mean_squared_error" (RMSE) is dropping nicely and while it maybe keeps fluctuating a bit it does end up at fairly low values.
@@ -417,10 +697,27 @@ But this metric is just the root *mean* squared error, so we might want to look 
 ## 7. Perform a Prediction/Classification
 Now that we have our model trained, we can make a prediction with the model before measuring the performance of our neural network.
 
+:::: group-tab
+
+### PyTorch
+
+```python
+_, train_rmse, y_train_true, y_train_predicted = eval_epoch(model, train_dl, loss_fn, accumulate=True)
+_, test_rmse, y_test_true, y_test_predicted = eval_epoch(model, test_dl, loss_fn, accumulate=True)
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 ```python
 y_train_predicted = model.predict(X_train)
 y_test_predicted = model.predict(X_test)
 ```
+
+<!-- end-tab -->
+
+::::
 
 ::: instructor
 ## BREAK
@@ -444,15 +741,42 @@ def plot_predictions(y_pred, y_true, title):
     plt.xlabel("predicted sunshine hours")
     plt.ylabel("true sunshine hours")
     plt.title(title)
+```
 
+:::: group-tab
+
+### PyTorch
+
+```python
+plot_predictions(y_train_predicted, y_train_true, title='Predictions on the training set')
+```
+
+<!-- end-tab -->
+
+###  Keras
+
+```python
 plot_predictions(y_train_predicted, y_train, title='Predictions on the training set')
 ```
 
 ![](fig/03_regression_predictions_trainset.png){alt='Scatter plot between predictions and true sunshine hours in Basel on the training set showing a concise spread'}
 
+:::: group-tab
+
+### PyTorch
+```python
+plot_predictions(y_test_predicted, y_test_true, title='Predictions on the test set')
+```
+
+<!-- end-tab -->
+
+###  Keras
 ```python
 plot_predictions(y_test_predicted, y_test, title='Predictions on the test set')
 ```
+<!-- end-tab -->
+
+::::
 ![](fig/03_regression_predictions_testset.png){alt='Scatter plot between predictions and true sunshine hours in Basel on the test set showing a wide spread'}
 
 :::: challenge
@@ -482,6 +806,19 @@ In fact, considering that the task of predicting the daily sunshine hours is rea
 (at least on the training set). Maybe a little too good?
 We also see the noticeable difference between train and test set when calculating the exact value of the RMSE:
 
+:::: group-tab
+
+### PyTorch
+```python
+print(f'Train RMSE: {train_rmse:.2f}, Test RMSE: {test_rmse:.2f}')
+```
+```output
+Train RMSE: 0.91, Test RMSE: 4.19
+```
+
+<!-- end-tab -->
+
+###  Keras
 ```python
 train_metrics = model.evaluate(X_train, y_train, return_dict=True)
 test_metrics = model.evaluate(X_test, y_test, return_dict=True)
@@ -492,6 +829,9 @@ print('Train RMSE: {:.2f}, Test RMSE: {:.2f}'.format(train_metrics['root_mean_sq
 6/6 [==============================] - 0s 647us/step - loss: 16.4413 - root_mean_squared_error: 4.0548
 Train RMSE: 0.84, Test RMSE: 4.05
 ```
+<!-- end-tab -->
+
+::::
 
 For those experienced with (classical) machine learning this might look familiar.
 The plots above expose the signs of **overfitting** which means that the model has to some extent memorized aspects of the training data.
@@ -566,7 +906,49 @@ set can be used during training, and the test set is reserved for afterwards.
 
 Let's give this a try!
 
-We need to initiate a new model -- otherwise Keras will simply assume that we want to continue training the model we already trained above.
+:::: group-tab
+
+### PyTorch
+
+We need to initialize a new model -- oterhwise we would continue training the parameters we already trained above.
+We also need to create a validation `dataset` and `dataloader`.
+
+```python
+val_dataset = TensorDataset(
+    torch.tensor(X_val.values, dtype=torch.float),
+    torch.tensor(y_val.values, dtype=torch.float)
+)
+val_dl = DataLoader(val_dataset, batch_size=32, shuffle=False)
+
+model = WeatherPredictionModel(input_shape=X_data.shape[1])
+optimizer = optim.Adam(model.parameters())
+loss_fn = nn.MSELoss()
+
+model = model.to(device)
+
+history = {
+    'loss': [],
+    'root_mean_squared_error': [],
+    'val_loss': [],
+    'val_root_mean_squared_error': []
+}
+epochs = 200
+
+for epoch in range(epochs):
+    loss, rmse = train_epoch(model, train_dl, loss_fn, optimizer, False)
+    history['loss'].append(loss)
+    history['root_mean_squared_error'].append(rmse)
+
+    val_loss, val_rmse, *_ = eval_epoch(model, val_dl, loss_fn)
+    history['val_loss'].append(val_loss)
+    history['val_root_mean_squared_error'].append(val_rmse)
+```
+
+<!-- end-tab -->
+
+###  Keras
+
+We need to initialize a new model -- otherwise Keras will simply assume that we want to continue training the model we already trained above.
 ```python
 model = create_nn(input_shape=(X_data.shape[1],))
 compile_model(model)
@@ -579,6 +961,9 @@ history = model.fit(X_train, y_train,
                     epochs=200,
                     validation_data=(X_val, y_val))
 ```
+<!-- end-tab -->
+
+::::
 
 With this we can plot both the performance on the training data and on the validation data!
 
@@ -624,6 +1009,70 @@ If time is short: Suggestion is to run one network with only 10 and 5 nodes in t
 
 ::: solution
 ## Solution
+
+:::: group-tab
+
+### PyTorch
+
+```python
+model = WeatherPredictionModel(input_shape=X_data.shape[1], hidden1=10, hidden2=5)
+summary(model, input_size=(32, X_data.shape[1]))
+```
+```output
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+WeatherPredictionModel                   [32, 1]                   --
+├─Linear: 1-1                            [32, 10]                  900
+├─Linear: 1-2                            [32, 5]                   55
+├─Linear: 1-3                            [32, 1]                   6
+==========================================================================================
+Total params: 961
+Trainable params: 961
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.03
+==========================================================================================
+Input size (MB): 0.01
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.00
+Estimated Total Size (MB): 0.02
+==========================================================================================
+```
+
+Let's train this network:
+
+```python
+
+
+optimizer = optim.Adam(model.parameters())
+loss_fn = nn.MSELoss()
+
+
+model = model.to(device)
+
+history = {
+    'loss': [],
+    'root_mean_squared_error': [],
+    'val_loss': [],
+    'val_root_mean_squared_error': []
+}
+epochs = 200
+
+for epoch in range(epochs):
+    loss, rmse = train_epoch(model, train_dl, loss_fn, optimizer, False)
+    history['loss'].append(loss)
+    history['root_mean_squared_error'].append(rmse)
+
+    val_loss, val_rmse, *_ = eval_epoch(model, val_dl, loss_fn)
+    history['val_loss'].append(val_loss)
+    history['val_root_mean_squared_error'].append(val_rmse)
+
+plot_history(history, ['root_mean_squared_error', 'val_root_mean_squared_error'])
+```
+
+<!-- end-tab -->
+
+###  Keras
 
 Let's first adapt our `create_nn()` function so that we can tweak the number of nodes in the 2 layers
 by passing arguments to the function:
@@ -681,6 +1130,10 @@ history = model.fit(X_train, y_train,
 plot_history(history, ['root_mean_squared_error', 'val_root_mean_squared_error'])
 ```
 
+<!-- end-tab -->
+
+::::
+
 ![](fig/03_training_history_3_rmse_smaller_model.png){alt='Plot of RMSE vs epochs for the training set and the validation set with similar performance across the two sets. RMSE for the validation set diverges from RMSE for the training set after around 10 epochs but the difference in RMSE values for the two sets is much smaller than in the previous example.'}
 
 1. With this smaller model we have reduced overfitting a bit, since the training and validation loss are now closer to each other, and the validation loss does now reach a plateau and does not further increase.
@@ -702,12 +1155,74 @@ More specifically, this usually means that the training is stopped if the valida
 Early stopping is both intuitive and effective to use, so it has become a standard addition for model training.
 
 To better study the effect, we can now safely go back to models with many (too many?) parameters:
+
+:::: group-tab
+
+### PyTorch
+
+```python
+model = WeatherPredictionModel(input_shape=X_data.shape[1])
+optimizer = optim.Adam(model.parameters())
+loss_fn = nn.MSELoss()
+
+def fit(model, train_dl, loss_fn, optimizer, val_dl):
+    model = model.to(device)
+
+    history = {
+        'loss': [],
+        'root_mean_squared_error': [],
+        'val_loss': [],
+        'val_root_mean_squared_error': []
+    }
+    epochs = 200
+    early_stopping_patience = 10
+
+    best_val_loss = float('inf')
+    patience_counter = 0
+
+    for epoch in range(epochs):
+        loss, rmse = train_epoch(
+            model,
+            train_dl,
+            loss_fn,
+            optimizer,
+            f"Epoch {epoch+1}/{epochs} {best_val_loss=:.2f}"
+        )
+        history['loss'].append(loss)
+        history['root_mean_squared_error'].append(rmse)
+
+        val_loss, val_rmse, *_ = eval_epoch(model, val_dl, loss_fn)
+        history['val_loss'].append(val_loss)
+        history['val_root_mean_squared_error'].append(val_rmse)
+
+        # Early stopping
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            patience_counter = 0
+            # Save best model
+            best_model_state = model.state_dict()
+        else:
+            patience_counter += 1
+            if patience_counter >= early_stopping_patience:
+                print(f'Early stopping at epoch {epoch+1}')
+                # Restore best model
+                model.load_state_dict(best_model_state)
+                break
+
+    return model, history
+
+model, history = fit(model, train_dl, loss_fn, optimizer, val_dl)
+```
+
+<!-- end-tab -->
+
+###  Keras
 ```python
 model = create_nn(input_shape=(X_data.shape[1],))
 compile_model(model)
 ```
 
-To apply early stopping during training it is easiest to use Keras `EarlyStopping` class.
+To apply early stopping during training it is easiest to use Keras' `EarlyStopping` class.
 This allows to define the condition of when to stop training. In our case we will say when the validation loss is lowest.
 However, since we have seen some fluctuation of the losses during training above we will also set `patience=10` which means that the model will stop training if the validation loss has not gone down for 10 epochs.
 ```python
@@ -724,6 +1239,9 @@ history = model.fit(X_train, y_train,
                     validation_data=(X_val, y_val),
                     callbacks=[earlystopper])
 ```
+<!-- end-tab -->
+
+::::
 
 As before, we can plot the losses during training:
 ```python
@@ -746,12 +1264,86 @@ Techniques to avoid overfitting, or to improve model generalization, are termed 
 
 A very common step in classical machine learning pipelines is to scale the features, for instance by using sckit-learn's `StandardScaler`.
 This can in principle also be done for deep learning.
+
+:::: group-tab
+
+### PyTorch
+An alternative, more common approach, is to add **BatchNormalization** layers ([documentation of the batch normalization layers](https://keras.io/api/layers/normalization_layers/batch_normalization/)) which will learn how to scale the input values.
+
+<!-- end-tab -->
+
+###  Keras
 An alternative, more common approach, is to add **BatchNormalization** layers ([documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/)) which will learn how to scale the input values.
+<!-- end-tab -->
+
+::::
+
 Similar to dropout, batch normalization is available as a network layer in Keras and can be added to the network in a similar way.
 It does not require any additional parameter setting.
 
-The `BatchNormalization` can be inserted as yet another layer into the architecture.
+Batch normalization can be inserted as yet another layer into the architecture.
 
+:::: group-tab
+
+### PyTorch
+
+```python
+class WeatherPredictionModelBatchNorm(nn.Module):
+    def __init__(self, input_shape, hidden1=100, hidden2=50):
+        super().__init__()
+        self.batch_norm = nn.BatchNorm1d(input_shape)
+        self.hidden_layer1 = nn.Linear(input_shape, hidden1)
+        self.hidden_layer2 = nn.Linear(hidden1, hidden2)
+        self.output_layer = nn.Linear(hidden2, 1)
+
+    def forward(self, x):
+        x = self.batch_norm(x)
+        x = self.hidden_layer1(x)
+        x = F.relu(x)
+        x = self.hidden_layer2(x)
+        x = F.relu(x)
+        x = self.output_layer(x)
+        return x
+
+model = WeatherPredictionModel(X_train.shape[1])
+summary(model, input_size=(32, X_train.shape[1]))
+```
+
+This new layer appears in the model summary as well.
+
+```output
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+WeatherPredictionModel                   [32, 1]                   --
+├─Linear: 1-1                            [32, 100]                 9,000
+├─Linear: 1-2                            [32, 50]                  5,050
+├─Linear: 1-3                            [32, 1]                   51
+==========================================================================================
+Total params: 14,101
+Trainable params: 14,101
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.45
+==========================================================================================
+Input size (MB): 0.01
+Forward/backward pass size (MB): 0.04
+Params size (MB): 0.06
+Estimated Total Size (MB): 0.11
+==========================================================================================
+```
+
+We can train the model again as follows:
+
+```python
+optimizer = optim.Adam(model.parameters())
+loss_fn = nn.MSELoss()
+
+model, history = fit(model, train_dl, loss_fn, optimizer, val_dl)
+```
+
+<!-- end-tab -->
+
+###  Keras
 ```python
 def create_nn(input_shape):
     # Input layer
@@ -810,6 +1402,9 @@ history = model.fit(X_train, y_train,
 
 plot_history(history, ['root_mean_squared_error', 'val_root_mean_squared_error'])
 ```
+<!-- end-tab -->
+
+::::
 
 ![](fig/03_training_history_5_rmse_batchnorm.png){alt='Plot of error vs epochs for the training set and the validation set displaying similar performance across the two sets. RMSE for the validation set drops more than for the training set at first, tracks the training error until approximately 50 epochs, then begins to gradually increase while error for the training set continues to gradually decrease.'}
 
@@ -828,10 +1423,28 @@ The additional parameters gamma and beta are introduced to allow for more flexib
 
 It seems that no matter what we add, the overall loss does not decrease much further (we at least avoided overfitting though!).
 Let us again plot the results on the test set:
+
+
+:::: group-tab
+
+### PyTorch
+
+```python
+_, test_rmse, y_test_true, y_test_predicted = eval_epoch(model, test_dl, loss_fn, accumulate=True)
+plot_predictions(y_test_predicted, y_test_true, title='Predictions on the test set')
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 ```python
 y_test_predicted = model.predict(X_test)
 plot_predictions(y_test_predicted, y_test, title='Predictions on the test set')
 ```
+<!-- end-tab -->
+
+::::
 
 ![](fig/03_regression_test_5_dropout_batchnorm.png){alt='Scatter plot between predictions and true sunshine hours for Basel on the test set, showing a loose positive correlation.'}
 
@@ -890,6 +1503,50 @@ X_train, X_holdout, y_train, y_holdout = train_test_split(X_data, y_data, test_s
 X_val, X_test, y_val, y_test = train_test_split(X_holdout, y_holdout, test_size=0.5, random_state=0)
 ```
 
+
+:::: group-tab
+
+### PyTorch
+
+```python
+train_dataset = TensorDataset(
+    torch.tensor(X_train.values, dtype=torch.float),
+    torch.tensor(y_train.values, dtype=torch.float)
+)
+test_dataset = TensorDataset(
+    torch.tensor(X_test.values, dtype=torch.float),
+    torch.tensor(y_test.values, dtype=torch.float)
+)
+val_dataset = TensorDataset(
+    torch.tensor(X_val.values, dtype=torch.float),
+    torch.tensor(y_val.values, dtype=torch.float)
+)
+
+train_dl = DataLoader(train_dataset, batch_size=32, shuffle=True)
+test_dl = DataLoader(test_dataset, batch_size=32, shuffle=False)
+val_dl = DataLoader(val_dataset, batch_size=32, shuffle=False)
+
+model = WeatherPredictionModelBatchNorm(input_shape=X_data.shape[1])
+summary(model, (32, X_train.shape[1]))
+```
+
+Fit with early stopping:
+```python
+optimizer = optim.Adam(model.parameters())
+loss_fn = nn.MSELoss()
+
+model, history = fit(model, train_dl, loss_fn, optimizer, val_dl)
+```
+
+Perform predictions:
+```python
+_, test_rmse, y_test_true, y_test_predicted = eval_epoch(model, test_dl, loss_fn, accumulate=True)
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 Create the network. We can re-use the `create_nn()` function that we already have. Because we have reduced the number of input features
 the number of parameters in the network goes down from 14457 to 6137.
 ```python
@@ -910,13 +1567,39 @@ history = model.fit(X_train, y_train,
 plot_history(history, ['root_mean_squared_error', 'val_root_mean_squared_error'])
 ```
 
-Create a scatter plot to compare with true observations:
+Perform predictions:
 ```python
 y_test_predicted = model.predict(X_test)
+```
+
+<!-- end-tab -->
+
+::::
+
+Create a scatter plot to compare with true observations:
+
+```python
 plot_predictions(y_test_predicted, y_test, title='Predictions on the test set')
 ```
 ![](fig/03_scatter_plot_basel_model.png){alt='Scatterplot of predictions and true number of sunshine hours for all cities, showing many data points distributed in a very loose positive correlation.'}
 
+
+:::: group-tab
+
+### PyTorch
+
+```python
+print('Baseline:', rmse_baseline)
+print('Test RMSE:', test_rmse)
+```
+```output
+Baseline: 3.877323350410224
+Test RMSE: 3.3969762325286865
+```
+
+<!-- end-tab -->
+
+###  Keras
 
 Compute the RMSE on the test set:
 ```python
@@ -926,6 +1609,10 @@ print(f'Test RMSE: {test_metrics["root_mean_squared_error"]}')
 ```output
 Test RMSE: 3.3761725425720215
 ```
+
+<!-- end-tab -->
+
+::::
 
 This RMSE is already a lot better compared to what we had before and certainly better than the baseline.
 Additionally, it could be further improved with hyperparameter tuning.
@@ -957,6 +1644,53 @@ From this we can conclude that adding more training data results in even better 
 If we run many different experiments with different architectures,
 it can be difficult to keep track of these different models or compare the achieved performance.
 We can use *tensorboard*, a framework that keeps track of our experiments and shows graphs like we plotted above.
+
+
+:::: group-tab
+
+### PyTorch
+
+Tensorboard is included in recent PyTorch versions by default.
+To use it, we can create a `SummaryWriter` we can then log metrics to.
+
+```python
+# TensorBoard logging
+from datetime import datetime
+from torch.utils.tensorboard import SummaryWriter
+
+
+log_dir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+writer = SummaryWriter(log_dir=log_dir)
+
+def fit_with_tensorboard(model, train_loader, val_loader, loss_fn, optimizer):
+    model = model.to(device)
+    val_loss = float("inf")
+    epochs = 50
+
+    for epoch in range(epochs):
+        # Training phase
+        loss, rmse = train_epoch(
+            model,
+            train_dl,
+            loss_fn,
+            optimizer,
+            f"Epoch {epoch+1}/{epochs} {val_loss=:.2f}"
+        )
+        writer.add_scalar('training loss', loss, epoch)
+
+        # Validation phase
+        val_loss, val_rmse, *_ = eval_epoch(model, val_loader, loss_fn)
+
+        # Log to TensorBoard
+        writer.add_scalar('validation loss', val_loss, epoch)
+
+    writer.close()
+    return model
+```
+
+<!-- end-tab -->
+
+###  Keras
 Tensorboard is included in our tensorflow installation by default.
 To use it, we first need to add a *callback* to our (compiled) model that saves the progress of training performance in a logs rectory:
 ```python
@@ -971,6 +1705,9 @@ history = model.fit(X_train, y_train,
                    callbacks=[tensorboard_callback],
                    verbose = 2)
 ```
+<!-- end-tab -->
+
+::::
 You can launch the tensorboard interface from a Jupyter notebook, showing all trained models:
 <!--cce:skip-->
 ```
@@ -985,9 +1722,26 @@ Which will show an interface that looks something like this:
 
 Now that we have a somewhat acceptable model, let us not forget to save it for future users to benefit from our explorative efforts!
 
+
+:::: group-tab
+
+### PyTorch
+
+```python
+trained_model_path = "weather_prediction_model_pytorch.pt"
+torch.save(model_final.state_dict(), trained_model_path)
+```
+
+<!-- end-tab -->
+
+###  Keras
+
 ```python
 model.save('my_tuned_weather_model.keras')
 ```
+<!-- end-tab -->
+
+::::
 
 ## Outlook
 Correctly predicting tomorrow's sunshine hours is apparently not that simple.
