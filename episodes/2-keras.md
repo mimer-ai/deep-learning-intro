@@ -892,12 +892,7 @@ In Pytorch, we define the loss function and optimizers. Moreover, we need DataLo
 
 loss_fn = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters())
-train_dataset = torch.utils.data.TensorDataset(
-    torch.tensor(X_train_scaled, dtype = torch.float),
-    torch.tensor(y_train.values, dtype = torch.float)
-)
-train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size = 128, shuffle = True)
-model.train()
+
 ```
 <!-- end-tab --><!-- end-tab -->
 
@@ -931,8 +926,6 @@ Using seaborn we can do this as follows:
 sns.lineplot(x=history.epoch, y=history.history['loss'])
 ```
 
-![][training_curve]{alt="Plot of the Cross Entropy loss, showing a sharp decrease in the first around 10 epochs, and converging at a low value afterwards."}
-
 <!-- end-tab --><!-- end-tab -->
 
 ###### PyTorch
@@ -940,27 +933,47 @@ sns.lineplot(x=history.epoch, y=history.history['loss'])
 In Pytorch, the training loop has to be defined explicitly:
 
 ```python
-loss = []
-for epoch in range(100):
+train_dataset = torch.utils.data.TensorDataset(
+    torch.tensor(X_train_scaled, dtype = torch.float),
+    torch.tensor(y_train.values, dtype = torch.float)
+)
+train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size = 128, shuffle = True)
+history = {
+    'loss': []
+}
+epochs = 100
+
+for epoch in range(epochs):
+    running_loss = 0.0
+
     for X_batch, y_batch in train_dataloader:
+        X_batch, y_batch = X_batch.to(device), y_batch.to(device)
+
         y_pred = model(X_batch)
         loss = loss_fn(y_pred, y_batch)
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
-    loss_history.append(loss.item())
-    print(f'Epoch {epoch+1:>3d} completed; last batch loss: {loss.item():.4f}')
+
+        running_loss += loss.item()
+
+    train_loss = running_loss / len(train_dataloader)
+    history['loss'].append(train_loss)
+    print(f'Epoch {epoch+1:>3d} completed; loss: {train_loss:.4f}')
 ```
 
 The training loss can then be plotted:
 
 ```python
-sns.lineplot(x=range(len(loss_history)), y=loss_history)
+sns.lineplot(x=range(epochs), y=history['loss'])
 ```
 
 <!-- end-tab --><!-- end-tab -->
 
 :::::::
+
+![][training_curve]{alt="Plot of the Cross Entropy loss, showing a sharp decrease in the first around 10 epochs, and converging at a low value afterwards."}
+
 
 ::: callout
 
@@ -1067,9 +1080,13 @@ Moreover, we wrap the prediction in a `torch.no_grad()` context so that the exec
 ```python
 model.eval()
 with torch.no_grad():
-    y_pred = model(torch.tensor(X_test_scaled, dtype = torch.float))
+    y_pred = model(torch.tensor(X_test_scaled, dtype=torch.float, device=device))
+
 prediction = pd.DataFrame(y_pred.to('cpu'), columns=target.columns)
 prediction
+```
+
+```output
   Adelie  Chinstrap  Gentoo
 0  0.786800  0.108887  0.104313
 1  0.874215  0.083492  0.042294
@@ -1292,7 +1309,7 @@ torch.save(model.state_dict(), 'penguins_classification.pt')
 Then we can reload it from disk using the `load_state_dict` method for the network and the `joblib.load()` method for the scaler:
 
 ```python
-pretrained_model = PenguinModel()
+pretrained_model = PenguinModel(X_train.shape[1]).to(device)
 pretrained_model.load_state_dict(torch.load('penguins_classification.pt'))
 pretrained_scaler = joblib.load('penguins_scaler.gz')
 ```
@@ -1302,9 +1319,10 @@ The inference is done exactly as before:
 ```python
 model.eval()
 with torch.no_grad():
-    X_test_scaled = torch.tensor(pretrained_scaler.transform(X_test), dtype = torch.float)
+    X_test_scaled = torch.tensor(pretrained_scaler.transform(X_test), dtype=torch.float, device=device)
     y_pretrained_pred = model(X_test_scaled)
-pretrained_prediction = pd.DataFrame(y_pretrained_pred, columns=target.columns.values)
+
+pretrained_prediction = pd.DataFrame(y_pretrained_pred.to('cpu'), columns=target.columns.values)
 
 # idxmax will select the column for each row with the highest value
 pretrained_predicted_species = pretrained_prediction.idxmax(axis="columns")
