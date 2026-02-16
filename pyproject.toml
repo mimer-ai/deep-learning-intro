@@ -30,7 +30,7 @@ notebook = [
   "seaborn",
   "scikit-learn",
   "pandas",
-  # "tensorflow",
+  "tensorflow",
   "pydot",
   "keras",
   "seaborn",
@@ -39,6 +39,7 @@ notebook = [
   "torchinfo>=1.8.0",
   "tensorboard>=2.20.0",
   "torchmetrics>=1.8.2",
+  "tqdm>=4.67.3",
 ]
 
 [build-system]
