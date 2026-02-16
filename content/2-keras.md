@@ -59,7 +59,7 @@ myst:
 
 ---
 
-# 2. Classification by a neural network using Keras
+# 2. Classification by a neural network using Keras/Pytorch
 
 ```{include} _patched/episodes/2-keras.md
 :relative-docs: _patched/episodes
