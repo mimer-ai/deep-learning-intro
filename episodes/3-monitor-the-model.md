@@ -426,7 +426,7 @@ In PyTorch the is implemented in the `torch.nn.MSELoss` class (see PyTorch docum
 
 <!-- end-tab --><!-- end-tab -->
 
-###  Keras
+######  Keras
 
 In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g.
 
