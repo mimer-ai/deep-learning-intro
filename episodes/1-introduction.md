@@ -471,11 +471,11 @@ There are many software libraries available for deep learning including:
 
 [TensorFlow](https://www.tensorflow.org/) was developed by Google and is one of the older deep learning libraries, ported across many languages since it was first released to the public in 2015. It is very versatile and capable of much more than deep learning but as a result it often takes a lot more lines of code to write deep learning operations in TensorFlow than in other libraries. It offers (almost) seamless integration with GPU accelerators and Google's own TPU (Tensor Processing Unit) chips that are built specially for machine learning.
 
-### PyTorch
+### PyTorch <!-- no-patch -->
 
 [PyTorch](https://pytorch.org/) was developed by Facebook in 2016 and is a popular choice for deep learning applications. It was developed for Python from the start and feels a lot more "pythonic" than TensorFlow. Like TensorFlow it was designed to do more than just deep learning and offers some very low level interfaces. [PyTorch Lightning](https://www.pytorchlightning.ai/) offers a higher level interface to PyTorch to set up experiments. Like TensorFlow it is also very easy to integrate PyTorch with a GPU. In many benchmarks it outperforms the other libraries.
 
-### Keras
+### Keras <!-- no-patch -->
 
 [Keras](https://keras.io/) is designed to be easy to use and usually requires fewer lines of code than other libraries. We have chosen it for this lesson for that reason. Keras can actually work on top of TensorFlow (and several other libraries), hiding away the complexities of TensorFlow while still allowing you to make use of their features.
 
