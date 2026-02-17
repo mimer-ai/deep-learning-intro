@@ -794,7 +794,6 @@ plot_predictions(y_test_predicted, y_test, title='Predictions on the test set')
  which features you use, model parameters and architecture. It is important to settle on a
  single-number evaluation metric to compare your models.
    * What single-number evaluation metric would you choose here and why?
-:::
    
 ::: solution
 ## Solution
@@ -806,6 +805,7 @@ This is a common problem called **overfitting**, which we will discuss in more d
 The metric that we are using: RMSE would be a good one. You could also consider Mean Squared Error, that punishes large errors more (because large errors create even larger squared errors).
 It is important that if the model improves in performance on the basis of this metric then that should also lead you a step closer to reaching your goal: to predict tomorrow's sunshine hours. 
 If you feel that improving the metric does not lead you closer to your goal, then it would be better to choose a different metric
+:::
 ::::
 
 The accuracy on the training set seems fairly good.
@@ -888,13 +888,13 @@ Judging from the numbers alone, our neural network prediction would be performin
 ## Exercise: Baseline
 1. Looking at this baseline: Would you consider this a simple or a hard problem to solve?
 2. (Optional) Can you think of other baselines?
-:::
 
 ::: solution
 ## Solution
 1. This really depends on your definition of hard! The baseline gives a more accurate prediction than just
 randomly predicting a number, so the problem is not impossible to solve with machine learning. However, given the structure of the data and our expectations with respect to quality of prediction, it may remain hard to find a good algorithm which exceeds our baseline by orders of magnitude.
 2. There are a lot of possible answers. A slighly more complicated baseline would be to take the average over the last couple of days.
+:::
 ::::
 
 ## 9. Refine the model
@@ -1007,7 +1007,7 @@ to 0. After that the curves will just consistently stay at 0.
 Overfitting is a very common issue and there are many strategies to handle it.
 Most similar to classical machine learning might to **reduce the number of parameters**.
 
-:::: challenge
+:::::::::::::::::::: challenge
 ## Exercise: Try to reduce the degree of overfitting by lowering the number of parameters
 We can keep the network architecture unchanged (2 dense layers + a one-node output layer) and only play with the number of nodes per layer.
 Try to lower the number of nodes in one or both of the two dense layers and observe the changes to the training and validation losses.
@@ -1017,7 +1017,7 @@ If time is short: Suggestion is to run one network with only 10 and 5 nodes in t
 2. Does the overall performance suffer or does it mostly stay the same?
 3. (optional) How low can you go with the number of parameters without notable effect on the performance on the validation set?
 
-::: solution
+:::::::::::::::::: solution
 ## Solution
 
 ::::::: group-tab
@@ -1151,8 +1151,8 @@ We have not completely avoided overfitting though.
 2. In the case of this small example model, the validation RMSE seems to end up around 3.2, which is much better than the 4.08 we had before. Note that you can double check the actual score by calling `model.evaluate()` on the test set.
 3. In general, it quickly becomes a complicated search for the right "sweet spot", i.e. the settings for which overfitting will be (nearly) avoided but the model still performs equally well. A model with 3 neurons in both layers seems to be around this spot, reaching an RMSE of 3.1 on the validation set. 
 Reducing the number of nodes further increases the validation RMSE again.
-:::
-::::
+::::::::::::::::::
+::::::::::::::::::::
 
 We saw that reducing the number of parameters can be a strategy to avoid overfitting.
 In practice, however, this is usually not the (main) way to go when it comes to deep learning.
@@ -1462,7 +1462,7 @@ plot_predictions(y_test_predicted, y_test, title='Predictions on the test set')
 Well, the above is certainly not perfect. But how good or bad is this? Maybe not good enough to plan your picnic for tomorrow.
 But let's better compare it to the naive baseline we created in the beginning. What would you say, did we improve on that?
 
-:::: challenge
+:::::::::::::::::::: challenge
 ## Exercise: Simplify the model and add data
 You may have been wondering why we are including weather observations from
 multiple cities to predict sunshine hours only in Basel. The weather is
@@ -1489,7 +1489,7 @@ but what happens if we limit ourselves to only one city?
   and all features from all cities. How does it perform?
   
   
-::: solution
+:::::::::::::::::: solution
 ## Solution
 ### 1. Use 9 years out of the dataset
 ```python
@@ -1647,10 +1647,10 @@ For the rest you can use the same code as above to train and evaluate the model
 
 This results in an RMSE on the test set of 3.23 (your result can be different, but should be in the same range).
 From this we can conclude that adding more training data results in even better performance!
-:::
-::::
+::::::::::::::::::
+::::::::::::::::::::
 
-::: callout
+:::::::::::::::::: callout
 ## Tensorboard
 If we run many different experiments with different architectures,
 it can be difficult to keep track of these different models or compare the achieved performance.
@@ -1728,7 +1728,7 @@ You can launch the tensorboard interface from a Jupyter notebook, showing all tr
 ```
 Which will show an interface that looks something like this:
 ![](fig/03_tensorboard.png){alt='Tensorboard graphical user interface.'}
-:::
+::::::::::::::::::
 
 ## 10. Save model
 
