@@ -263,6 +263,9 @@ From the `torchvision.models` module we use the `densenet121` architecture.
 ```python
 import torch.nn as nn
 
+# We would like to specify a sensible path for this as this is where the pre-trained model is stored.
+os.environ['TORCH_HOME']='.'
+
 class DenseNetClassifier(nn.Module):
     def __init__(self, num_classes):
         super().__init__()
