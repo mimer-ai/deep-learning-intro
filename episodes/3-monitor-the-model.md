@@ -226,7 +226,7 @@ model = WeatherPredictionModel(X_train.shape[1])
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 ```python
 from tensorflow import keras
@@ -426,7 +426,7 @@ In PyTorch the is implemented in the `torch.nn.MSELoss` class (see PyTorch docum
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 In Keras this is implemented in the `keras.losses.MeanSquaredError` class (see Keras documentation: https://keras.io/api/losses/). This can be provided into the `model.compile` method with the `loss` parameter and setting it to `mse`, e.g.
 
@@ -455,7 +455,7 @@ optimizer = optim.Adam(model.parameters())
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 <!--cce:skip-->
 ```python
@@ -492,7 +492,7 @@ train_rmse = running_rmse / len(data_loader)
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 With Keras, such additional metrics can be added via `metrics=[...]` parameter and can contain one or multiple metrics of interest.
 Here we could for instance choose `mae` ([mean absolute error](https://glosario.carpentries.org/en/#mean_absolute_error)), or the [*root mean squared error* (RMSE)](https://glosario.carpentries.org/en/#root_mean_squared_error) which unlike the *mse* have the same units as the predicted values. We choose the latter.
@@ -625,7 +625,7 @@ for epoch in range(epochs):
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 ```python
 history = model.fit(X_train, y_train,
@@ -664,7 +664,7 @@ plot_history(history, 'root_mean_squared_error')
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 ```python
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -708,7 +708,7 @@ _, test_rmse, y_test_true, y_test_predicted = eval_epoch(model, test_dl, loss_fn
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 ```python
 y_train_predicted = model.predict(X_train)
@@ -754,7 +754,7 @@ plot_predictions(y_train_predicted, y_train_true, title='Predictions on the trai
 <!-- end-tab --><!-- end-tab -->
 
 
-######  Keras
+###### Keras
 
 ```python
 plot_predictions(y_train_predicted, y_train, title='Predictions on the training set')
@@ -775,7 +775,7 @@ plot_predictions(y_test_predicted, y_test_true, title='Predictions on the test s
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 ```python
 plot_predictions(y_test_predicted, y_test, title='Predictions on the test set')
@@ -826,7 +826,7 @@ Train RMSE: 0.91, Test RMSE: 4.19
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 ```python
 train_metrics = model.evaluate(X_train, y_train, return_dict=True)
@@ -956,7 +956,7 @@ for epoch in range(epochs):
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 We need to initialize a new model -- otherwise Keras will simply assume that we want to continue training the model we already trained above.
 ```python
@@ -1082,7 +1082,7 @@ plot_history(history, ['root_mean_squared_error', 'val_root_mean_squared_error']
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 Let's first adapt our `create_nn()` function so that we can tweak the number of nodes in the 2 layers
 by passing arguments to the function:
@@ -1226,7 +1226,7 @@ model, history = fit(model, train_dl, loss_fn, optimizer, val_dl)
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 ```python
 model = create_nn(input_shape=(X_data.shape[1],))
 compile_model(model)
@@ -1283,9 +1283,9 @@ An alternative, more common approach, is to add **BatchNormalization** layers ([
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 An alternative, more common approach, is to add **BatchNormalization** layers ([documentation of the batch normalization layer](https://keras.io/api/layers/normalization_layers/batch_normalization/)) which will learn how to scale the input values.
-<!-- end-tab -->
+<!-- end-tab --><!-- end-tab -->
 
 :::::::
 
@@ -1354,7 +1354,7 @@ model, history = fit(model, train_dl, loss_fn, optimizer, val_dl)
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 ```python
 def create_nn(input_shape):
     # Input layer
@@ -1447,7 +1447,7 @@ plot_predictions(y_test_predicted, y_test_true, title='Predictions on the test s
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 ```python
 y_test_predicted = model.predict(X_test)
@@ -1556,7 +1556,7 @@ _, test_rmse, y_test_true, y_test_predicted = eval_epoch(model, test_dl, loss_fn
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 Create the network. We can re-use the `create_nn()` function that we already have. Because we have reduced the number of input features
 the number of parameters in the network goes down from 14457 to 6137.
@@ -1610,7 +1610,7 @@ Test RMSE: 3.3969762325286865
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 Compute the RMSE on the test set:
 ```python
@@ -1701,7 +1701,7 @@ def fit_with_tensorboard(model, train_loader, val_loader, loss_fn, optimizer):
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 Tensorboard is included in our tensorflow installation by default.
 To use it, we first need to add a *callback* to our (compiled) model that saves the progress of training performance in a logs rectory:
 ```python
@@ -1746,7 +1746,7 @@ torch.save(model_final.state_dict(), trained_model_path)
 
 <!-- end-tab --><!-- end-tab -->
 
-######  Keras
+###### Keras
 
 ```python
 model.save('my_tuned_weather_model.keras')
