@@ -920,7 +920,7 @@ Let's give this a try!
 
 ###### PyTorch
 
-We need to initialize a new model -- oterhwise we would continue training the parameters we already trained above.
+We need to initialize a new model -- otherwise we would continue training the parameters we already trained above.
 We also need to create a validation `dataset` and `dataloader`.
 
 ```python
