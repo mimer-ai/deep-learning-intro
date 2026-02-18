@@ -16,11 +16,52 @@ def patch(file: Path) -> str:
     while (text := pattern_colon_fence_with_title.sub(replace_with_myst_admonition_and_title, text)) != prev_text:
         prev_text = text
 
+    text = pattern_colon_fence_group_tab.sub(replace_with_tabs, text)
     text = pattern_colon_fence.sub(replace_with_myst_admonition, text)
+    text = pattern_keras_or_pytorch_heading.sub(replace_with_group_tab, text)
+    text = pattern_end_tab.sub(replace_with_group_tab_end, text)
     text = pattern_heading_target.sub(replace_with_myst_heading_target, text)
     text = pattern_figures_with_ref.sub(replace_with_jinja_var, text)
     text = pattern_image_attrs_inline.sub(replace_with_myst_attrs_line, text)
     return text
+
+pattern_keras_or_pytorch_heading = re.compile(
+    r"""
+        ^(\#{3,6})  # 1. level-3 to 6 heading markup
+        \s*
+        ((?:Keras|PyTorch))  # 2. heading text
+        $  # end of line
+    """,
+    flags=re.X | re.M,
+)
+def replace_with_group_tab(m: re.Match):
+    if m:
+        nb_hash = len((m.group(1)))
+        heading_text = m.group(2)
+        return ":" * nb_hash + "{group-tab} "+ heading_text
+
+pattern_end_tab = re.compile(
+    r"""
+        <!-- # HTML comment start
+        \s*
+        end-tab
+        \s*
+        --> # HTML comment end
+    """,
+    flags=re.X | re.M
+)
+
+replace_with_group_tab_end = r":::"
+
+pattern_colon_fence_group_tab = re.compile(
+    r"""
+        ^::(:+)  # 1. colon fence
+        \s*
+        (group-tab)  # 2. admonition
+    """,
+    flags = re.X | re.M,
+)
+replace_with_tabs = r"::\1{tabs}"
 
 pattern_colon_fence_with_title = re.compile(
     r"""
