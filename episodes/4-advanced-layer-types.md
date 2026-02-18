@@ -673,8 +673,8 @@ history = model.fit(train_images, train_labels, epochs=10,
 
 ###### PyTorch
 
-Here we define a `fit` function which iterates over several epochs and trains the model while computing the losses and metrics, just as it was done in the previous episode.
-The `train` and `test` function which iterates 
+Here we define a `fit` function which iterates over several epochs and trains the model while computing and recording the history of losses and metrics, just as it was done in the previous episode.
+The `train` and `test` functions are defined to iterate over the training and validation dataloaders for one epoch each.
 Refer to the notebook to see how they are defined exactly.
 
 ```python
@@ -689,8 +689,6 @@ def train(dl, model, loss_fn, optimizer, device=torch.device("cuda:0")):
         # Train
         # Compute losses and metric (accuracy)
         ...
-        
-        
     
     return avg_loss, avg_acc
         
@@ -1370,8 +1368,10 @@ class HPModel(nn.Module):
         n_features_after_flatten = 64
         for n in range(n_layers):
             n_features_after_flatten = (n_features_after_flatten - 2)//2
+
         n_features_after_flatten = n_features_after_flatten ** 2 * 50
         self.head = nn.Sequential(nn.Dropout(dropout_rate), nn.Flatten(), nn.Linear(n_features_after_flatten , 50), nn.ReLU(), nn.Linear(50, 10))
+
     def forward(self, x):
         x = self.in_layer(x)
         x = self.hidden_layers(x)
@@ -1486,28 +1486,31 @@ histories = {}
 trial = 0
 
 for n_layers in n_layers_grid:
-    for p in dropout_rate_grid:
+    for dropout_rate in dropout_rate_grid:
 
-        history = fit(HPModel(p, n_layers), optim, loss_fn, train_ds, val_ds, learning_rate=0.0001)
-        histories[n_layers, p] = history
+        history = fit(HPModel(dropout_rate, n_layers), optim, loss_fn, train_ds, val_ds, learning_rate=0.0001)
+        histories[n_layers, dropout_rate] = history
 
         val_loss = min(history["loss"])
         if val_loss < best_loss:
             best_loss = val_loss
-            best = (n_layers, p,)
+            best = (n_layers, float(dropout_rate),)
             best_model = model
             
-        print(f"trial {trial}: params: {n_layers}, {p}; best: {best_loss} at {best}")
+        print(
+            f"trial {trial}: params: {n_layers=}, {dropout_rate}; "
+            f"best: {best_loss} at (n_layers, dropout_rate)={best}"
+        )
         trial += 1
 
-print(f"best val loss: {best_loss} at {best}")
-print(trial)
+print(f"best val loss: {best_loss:.4f} at (n_layers, dropout_rate)={best}")
+print("trials executed:", trial)
 ```
 
 ```output
 [...more output here...]
-best val loss: 1.5804577001503535 at (1, np.float64(0.8))
-6
+best val loss: 1.5804577001503535 at (n_layers, dropout_rate)={(1, 0.8)
+trials executed: 6
 ```
 
 <!-- end-tab --><!-- end-tab -->
