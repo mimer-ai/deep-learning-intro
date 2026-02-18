@@ -317,11 +317,13 @@ We have 100 matrices with 3 * 3 * 3 = 27 values each so that gives 27 * 100 = 27
 :::
 ::::
 
-So let us look at a network with a few convolutional layers. We need to finish with a Dense layer to connect the output cells of the convolutional layer to the outputs for our classes.
+So let us look at a network with a few convolutional layers.
 
 ::::::: group-tab
 
 ###### Keras
+
+We need to finish with a fully-connected `Dense` layer to connect the output cells of the convolutional layer to the outputs for our classes.
 
 ```python
 from tensorflow import keras
@@ -365,6 +367,8 @@ Model: "dollar_street_model_small"
 <!-- end-tab --><!-- end-tab -->
 
 ###### PyTorch
+
+We need to finish with a fully-connected `Linear` layer to connect the output cells of the convolutional layer to the outputs for our classes.
 
 ```python
 class DollarStreetModelSmall(nn.Module):
@@ -426,7 +430,7 @@ We can get inspiration for neural network architectures that could work on our d
 ::: solution
 ## Solution
 * The Flatten layer converts the 60x60x50 output of the convolutional layer into a single one-dimensional vector, that can be used as input for a dense layer.
-* The last dense layer has the most parameters. This layer connects every single output 'pixel' from the convolutional layer to the 10 output classes.
+* The last fully-connected `Dense` / `Linear` layer has the most parameters. This layer connects every single output 'pixel' from the convolutional layer to the 10 output classes.
 That results in a large number of connections, so a large number of parameters. This undermines a bit the expressiveness of the convolutional layers, that have much fewer parameters.
 :::
 ::::
@@ -621,9 +625,11 @@ compile_model(model)
 
 ###### PyTorch
 
+We choose the optimizer and loss function classes and will instantiate them inside the `fit` function.
+
 ```python
-optim = torch.optim.Adam(model.parameters())
-loss_fn = torch.nn.CrossEntropyLoss()
+optim = torch.optim.Adam
+loss_fn = torch.nn.CrossEntropyLoss
 ```
 
 <!-- end-tab --><!-- end-tab -->
@@ -642,7 +648,7 @@ If the data is highly imbalanced and 90 of these images are dogs, the model will
 This high number looks like the model performs great, but it is misleading; the model might not have learned to identify a cat image at all.
 In such an imbalanced dataset, other metrics such as [precision](https://keras.io/api/metrics/classification_metrics/#precision-class) and [recall](https://keras.io/api/metrics/classification_metrics/#recall-class) are more suitable.
 
-The documentation provides a comprehensive list of [metrics available in Keras](https://keras.io/api/metrics/), suitable for different tasks and datasets. Similarly, the `torchmetrics` package provides a variety of metrics for deep learning in PyTorch [(docs)[https://lightning.ai/docs/torchmetrics/stable/all-metrics.html]].
+The documentation provides a comprehensive list of [metrics available in Keras](https://keras.io/api/metrics/), suitable for different tasks and datasets. Similarly, the [`torchmetrics` package provides a variety of metrics for deep learning in PyTorch](https://lightning.ai/docs/torchmetrics/stable/all-metrics.html).
 :::
 
 ::: instructor
@@ -667,7 +673,60 @@ history = model.fit(train_images, train_labels, epochs=10,
 
 ###### PyTorch
 
+Here we define a `fit` function which iterates over several epochs and trains the model while computing the losses and metrics, just as it was done in the previous episode.
+The `train` and `test` function which iterates 
+Refer to the notebook to see how they are defined exactly.
+
 ```python
+def train(dl, model, loss_fn, optimizer, device=torch.device("cuda:0")):
+    model = model.to(device)
+    model.train()
+
+    avg_loss = 0.0
+    avg_acc = 0.0
+    
+    for step, (x, y) in enumerate(tqdm(dl)):    
+        # Train
+        # Compute losses and metric (accuracy)
+        ...
+        
+        
+    
+    return avg_loss, avg_acc
+        
+        
+def test(dl, model, loss_fn, device=torch.device("cuda:0")):
+    model = model.to(device)
+    model.eval()
+    ...
+    
+    with torch.no_grad():
+        for step, (x, y) in enumerate(dl):
+            # Compute losses and metric (accuracy)
+            ...
+    
+    return avg_loss, avg_acc
+
+
+def fit(model, optimizer, loss, train_ds, val_ds, batch_size=32, learning_rate=0.001, num_epochs=20):
+
+    # instantiate optimizer and loss_fn
+    loss_fn = loss()
+    optim = optimizer(model.parameters(), lr=learning_rate)
+
+    train_dl = torch.utils.data.DataLoader(train_ds, batch_size=batch_size, shuffle=True)
+    val_dl = torch.utils.data.DataLoader(val_ds, batch_size=1, shuffle=False)
+
+    history = {"loss": [], "val_loss": [], "accuracy": [], "val_accuracy": []}
+    for epoch in range(num_epochs):
+        train_loss, train_acc = train(train_dl, model, loss_fn, optim, device=device)
+        val_loss, val_acc = test(val_dl, model, loss_fn, device=device)
+
+        for k, v in [("loss", train_loss), ("val_loss", val_loss), ("accuracy", train_acc), ("val_accuracy", val_acc)]:
+            history[k].append(v)
+    
+    return history
+
 history = fit(model, optim, loss_fn, train_ds, val_ds, learning_rate=0.0001)
 ```
 
@@ -972,6 +1031,7 @@ plot_history(history, ['accuracy', 'val_accuracy'])
 
 ###### PyTorch
 
+```py
 class DollarStreetModel(nn.Module):
     def __init__(self):
         super().__init__()
@@ -992,7 +1052,8 @@ class DollarStreetModel(nn.Module):
         )
     def forward(self, x):
         return self.s(x)
-
+```
+        
 <!-- end-tab --><!-- end-tab -->
 :::::::
 
