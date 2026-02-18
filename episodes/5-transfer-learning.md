@@ -30,7 +30,7 @@ flowchart LR
     C --> E(Dog Breeds Model)
 ```
 
-In this episode we will learn how use Keras to adapt a state-of-the-art pre-trained model to the [Dollar Street Dataset](https://zenodo.org/records/10970014).
+In this episode we will learn how to adapt a state-of-the-art pre-trained model to the [Dollar Street Dataset](https://zenodo.org/records/10970014).
 
 
 ## 1. Formulate / Outline the problem
@@ -63,11 +63,6 @@ The goal is to predict one out of 10 classes to which the image belongs.
 
 ###### Keras
 
-Keras is a machine learning framework with ease of use as one of its main features.
-It is part of the tensorflow python package and can be imported using `from tensorflow import keras`.
-
-Keras includes functions, classes and definitions to define deep learning models, cost functions and optimizers (optimizers are used to train a model).
-
 Before we move on to the next section of the workflow we need to make sure we have Keras imported.
 We do this as follows:
 
@@ -82,9 +77,6 @@ keras.utils.set_random_seed(2)
 <!-- end-tab --><!-- end-tab -->
 
 ###### PyTorch
-
-PyTorch is a popular deep learning framework designed to enable developers to implement any type of neural network in environments ranging from academic research to industrial applications.
-Thus, PyTorch includes functions and classes to define deep learning models, cost functions and optimizers (optimizers are used to train a model).
 
 Before we move on to the next section of the workflow we need to make sure we have PyTorch imported.
 We do this as follows:
@@ -116,7 +108,7 @@ val_images = val_images / 255.0
 
 We introduce a dataset class here:
 - Similar as in the previous session: It scales the values between 0 and 1, but also permutes the order of dimensions as image data is organised differently in PyTorch than in tensorflow.
-- **New is that we introduce an parameter `transform` to the dataset class**. This function preprocesses the images before feeding them to our neural network. It is a good practice to do this in the dataset class as then the transformations are only executed for an image when fetching the image. In our lesson here it would be also fine to do these once, but in many cases one would then run out of memory.
+- What is new is that, **we introduce an callable attribute `transform` to the dataset class**. This function preprocesses the images before feeding them to our neural network. It is a good practice to do this in the dataset class as then the transformations are only executed for an image when fetching the image. In our lesson here it would be also fine to do these once, but in many cases one would then run out of memory.
 
 ```python
 class DollarStreetDataset(torch.utils.data.Dataset):
@@ -150,7 +142,9 @@ class DollarStreetDataset(torch.utils.data.Dataset):
 
 ## 4. Choose a pre-trained model or start building architecture from scratch
 
-*In practice, you would probably first pick a pre-trained model, and then realise what pre-processing needs to be done. The below steps can be seen as iterative.*
+::: note
+In practice, you would probably first pick a pre-trained model, and then realise what pre-processing needs to be done. The steps below can be seen as the results of an iterative work.
+:::
 
 Before loading any pre-trained model, we need to take care of the fact that our images have 64 x 64 pixels, whereas the pre-trained model that we will use was 
 trained on images of 160 x 160 pixels. 
