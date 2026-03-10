@@ -7,6 +7,8 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = content
 BUILDDIR      = _build
+# The following variable made by "git switch main; ls"
+MAIN_BRANCH_PATHS = episodes  instructors  learners  paper  profiles  site  AUTHORS  CITATION.cff  CODE_OF_CONDUCT.md  config.yaml  CONTRIBUTING.md  deep-learning-intro.Rproj  index.md  LICENSE.md  links.md  README.md  workshops.md
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -24,6 +26,11 @@ lock:
 
 patch:
 	python3 patch.py $(SOURCEDIR) episodes learners instructors profiles
+
+filter-repo:
+	@echo git filter-repo \
+	    $(foreach path,$(MAIN_BRANCH_PATHS),--path $(path)) \
+	    --replace-refs delete-no-add
 
 # Live reload site documents for local development
 livehtml:
