@@ -1,0 +1,38 @@
+.sidebar-logo {
+	max-width: 75%;
+}
+
+.callout {
+  border-color: var(--evita-color-info) !important;
+
+  /* Equivalent to child combinator .admonition-xxxx > .admonition-title */
+  .admonition-title {
+    background-color: var(--evita-color-info-bg) !important;
+    border-color: var(--evita-color-info) !important;
+  }
+  /* Equivalent to child combinator .admonition-xxxx > .admonition-title::before */
+  .admonition-title::before {
+    background-color: var(--evita-color-info) !important;
+  }  
+}
+
+.instructor {
+  border-color: var(--evita-color-internal);
+
+  /* Equivalent to child combinator .admonition-xxxx > .admonition-title */
+  .admonition-title {
+    background-color: var(--evita-color-internal-bg);
+    border-color: var(--evita-color-internal);
+  }
+  /* Equivalent to child combinator .admonition-xxxx > .admonition-title::before */
+  .admonition-title::before {
+    background-color: var(--evita-color-internal);
+  }  
+}
+
+.instructor {
+  .admonition-title::before {
+    -webkit-mask-image: var(--icon--instructor-note) !important;
+    mask-image: var(--icon--instructor-note) !important;
+  }  
+}

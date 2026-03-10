@@ -1,0 +1,1340 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex/"><link rel="search" title="Search" href="../search/"><link rel="next" title="6. Outlook" href="../6-outlook/"><link rel="prev" title="4. Advanced layer types" href="../4-advanced-layer-types/">
+        <link rel="prefetch" href="../_static/Mimer_logo_light.png" as="image">
+        <link rel="prefetch" href="../_static/Mimer_logo_dark.png" as="image">
+
+    <link rel="shortcut icon" href="../_static/favicon.png"><!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>5. Transfer learning - Intro to Deep Learning</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+    <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+    <link rel="stylesheet" type="text/css" href="../_static/furo_ext_lesson.css?v=4df71876" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/overrides.css?v=e1dafcfd" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">Intro to Deep Learning</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/Mimer_logo_light.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/Mimer_logo_dark.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Intro to Deep Learning</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Preparation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup/">Setup</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1-introduction/">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2-keras/">2. Classification by a neural network using Keras/Pytorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3-monitor-the-model/">3. Monitor the training process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4-advanced-layer-types/">4. Advanced layer types</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">5. Transfer learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6-outlook/">6. Outlook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/">Reference for learners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../instructor-notes/">Instructor notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../learner-profiles/">Learner profiles</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/mimer-ai/deep-learning-intro/blob/sphinx//content/5-transfer-learning.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/mimer-ai/deep-learning-intro/edit/sphinx//content/5-transfer-learning.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="transfer-learning">
+<h1>5. Transfer learning<a class="headerlink" href="#transfer-learning" title="Link to this heading">¶</a></h1>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>How do I apply a pre-trained model to my data?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Adapt a state-of-the-art pre-trained network to your own dataset</p></li>
+</ul>
+</div>
+<section id="what-is-transfer-learning">
+<h2>What is transfer learning?<a class="headerlink" href="#what-is-transfer-learning" title="Link to this heading">¶</a></h2>
+<p>Instead of training a model from scratch, with transfer learning you make use of models that are trained on another machine learning task. The pre-trained network captures generic knowledge during pre-training and will only be ‘fine-tuned’ to the specifics of your dataset.</p>
+<p>An example: Let’s say that you want to train a model to classify images of different dog breeds. You could make use of a pre-trained network that learned how to classify images of dogs and cats. The pre-trained network will not know anything about different dog breeds, but it will have captured some general knowledge of, on a high-level, what dogs look like, and on a low-level all the different features (eyes, ears, paws, fur) that make up an image of a dog. Further training this model on your dog breed dataset is a much easier task than training from scratch, because the model can use the general knowledge captured in the pre-trained network.</p>
+<pre  class="mermaid">
+        flowchart LR
+    accTitle: Transfer Learning
+    accDescr {The &quot;Dogs &amp; Cats&quot; dataset is used to train a model.
+    With Transfer Learning, the smaller &quot;Dog Breeds&quot; dataset is used to add more specific data.
+    This results in the &quot;Dog Breeds&quot; model that makes use of both data sets.}
+    A[(Dogs &amp; Cats Data)] --&gt; |Train Model| B(Model Dogs &amp; Cats)
+    C{Transfer Learning}
+    B --&gt; C
+    D[(Dog Breeds Data)] --&gt; C
+    C --&gt; E(Dog Breeds Model)
+    </pre><p>In this episode we will learn how to adapt a state-of-the-art pre-trained model to the <a class="reference external" href="https://zenodo.org/records/10970014">Dollar Street Dataset</a>.</p>
+</section>
+<section id="formulate-outline-the-problem">
+<h2>1. Formulate / Outline the problem<a class="headerlink" href="#formulate-outline-the-problem" title="Link to this heading">¶</a></h2>
+<p>Just like in the previous episode, we use the Dollar Street 10 dataset.</p>
+<p>We load the data in the same way as the previous episode:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">DATA_FOLDER</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;data/dataset_dollarstreet/&#39;</span><span class="p">)</span> <span class="c1"># change to location where you stored the data</span>
+<span class="n">train_images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">DATA_FOLDER</span> <span class="o">/</span> <span class="s1">&#39;train_images.npy&#39;</span><span class="p">)</span>
+<span class="n">val_images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">DATA_FOLDER</span> <span class="o">/</span> <span class="s1">&#39;test_images.npy&#39;</span><span class="p">)</span>
+<span class="n">train_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">DATA_FOLDER</span> <span class="o">/</span> <span class="s1">&#39;train_labels.npy&#39;</span><span class="p">)</span>
+<span class="n">val_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">DATA_FOLDER</span> <span class="o">/</span> <span class="s1">&#39;test_labels.npy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="identify-inputs-and-outputs">
+<h2>2. Identify inputs and outputs<a class="headerlink" href="#identify-inputs-and-outputs" title="Link to this heading">¶</a></h2>
+<p>As discussed in the previous episode, the input are images of dimension 64 x 64 pixels with 3 colour channels each.
+The goal is to predict one out of 10 classes to which the image belongs.</p>
+</section>
+<section id="prepare-the-data">
+<h2>3. Prepare the data<a class="headerlink" href="#prepare-the-data" title="Link to this heading">¶</a></h2>
+<section id="import-the-deep-learning-framework">
+<h3>Import the deep learning framework<a class="headerlink" href="#import-the-deep-learning-framework" title="Link to this heading">¶</a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-0-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-0-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-0-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p>Before we move on to the next section of the workflow we need to make sure we have Keras imported.
+We do this as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+
+<span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p>Before we move on to the next section of the workflow we need to make sure we have PyTorch imported.
+We do this as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></div>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-1-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-1-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-1-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p>We prepare the data as before, scaling the values between 0 and 1.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_images</span> <span class="o">=</span> <span class="n">train_images</span> <span class="o">/</span> <span class="mf">255.0</span>
+<span class="n">val_images</span> <span class="o">=</span> <span class="n">val_images</span> <span class="o">/</span> <span class="mf">255.0</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p>We introduce a dataset class here:</p>
+<ul class="simple">
+<li><p>Similar as in the previous session: It scales the values between 0 and 1, but also permutes the order of dimensions as image data is organised differently in PyTorch than in tensorflow.</p></li>
+<li><p>What is new is that, <strong>we introduce an callable attribute <code class="docutils literal notranslate"><span class="pre">transform</span></code> to the dataset class</strong>. This function preprocesses the images before feeding them to our neural network. It is a good practice to do this in the dataset class as then the transformations are only executed for an image when fetching the image. In our lesson here it would be also fine to do these once, but in many cases one would then run out of memory.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DollarStreetDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+        <span class="k">if</span> <span class="n">train</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">_images.npy&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">root</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">_labels.npy&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="c1"># PyTorch requires another order of dimensions than the original tensorflow data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        
+        <span class="c1"># This is required as we would like to perform the transforms when fetching the data</span>
+        <span class="c1"># Especially important, e.g., with large datasets or when doing augmentations</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> 
+        <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div></div>
+</section>
+</section>
+<section id="choose-a-pre-trained-model-or-start-building-architecture-from-scratch">
+<h2>4. Choose a pre-trained model or start building architecture from scratch<a class="headerlink" href="#choose-a-pre-trained-model-or-start-building-architecture-from-scratch" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In practice, you would probably first pick a pre-trained model, and then realise what pre-processing needs to be done. The steps below can be seen as the results of an iterative work.</p>
+</div>
+<p>Before loading any pre-trained model, we need to take care of the fact that our images have 64 x 64 pixels, whereas the pre-trained model that we will use was
+trained on images of 160 x 160 pixels.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-2-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-2-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-2-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-2-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-2-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p>Let’s define our model input layer using the shape of our training images:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># input tensor</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">train_images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+</div>
+<p>Our images are 64 x 64 pixels, whereas the pre-trained model that we will use was
+trained on images of 160 x 160 pixels.
+To adapt our data accordingly, we add an upscale layer that resizes the images to 160 x 160 pixels during training and prediction.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># upscale layer</span>
+<span class="n">method</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">ResizeMethod</span><span class="o">.</span><span class="n">BILINEAR</span>
+<span class="n">upscale</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span>
+  <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">resize_with_pad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">))(</span><span class="n">inputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-2-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p>Our images are 64 x 64 pixels, whereas the pre-trained model that we will use was
+trained on images of 160 x 160 pixels.
+To adapt our data accordingly, we define a <code class="docutils literal notranslate"><span class="pre">transform</span></code> function that resizes the images to 160 x 160 pixels during training and prediction.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.transforms</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">T</span>
+
+<span class="n">transform</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">ToPILImage</span><span class="p">(),</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">160</span><span class="p">),</span>        <span class="c1"># keeps aspect ratio</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">160</span><span class="p">),</span>    <span class="c1"># ensures output is 160x160</span>
+    <span class="n">T</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()])</span>
+</pre></div>
+</div>
+<p>We pass our <code class="docutils literal notranslate"><span class="pre">transform</span></code> function when creating the <code class="docutils literal notranslate"><span class="pre">train_dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">val_dataset</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">DollarStreetDataset</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">DollarStreetDataset</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></div>
+<p>We use a DenseNet121. This architecture was proposed by the paper: <a class="reference external" href="https://arxiv.org/abs/1608.06993">Densely Connected Convolutional Networks (CVPR 2017)</a>.
+It is trained on the <a class="reference external" href="https://www.image-net.org/">Imagenet</a> dataset, which contains 14,197,122 annotated images according to the WordNet hierarchy with over 20,000 classes.</p>
+<p>We will have a look at the architecture later, for now it is enough to know
+that it is a convolutional neural network with 121 layers that was designed
+to work well on image classification tasks.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-3-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-3-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-3-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-3-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-3-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p>From the <code class="docutils literal notranslate"><span class="pre">keras.applications</span></code> module we use the <code class="docutils literal notranslate"><span class="pre">DenseNet121</span></code> architecture.</p>
+<p>Let’s configure the DenseNet121:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">applications</span><span class="o">.</span><span class="n">DenseNet121</span><span class="p">(</span><span class="n">include_top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                            <span class="n">pooling</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span>
+                                            <span class="n">weights</span><span class="o">=</span><span class="s1">&#39;imagenet&#39;</span><span class="p">,</span>
+                                            <span class="n">input_tensor</span><span class="o">=</span><span class="n">upscale</span><span class="p">,</span>
+                                            <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span><span class="mi">160</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+                                            <span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-ssl-certificate-verify-failed-error callout admonition" id="callout-0">
+<p class="admonition-title">SSL: certificate verify failed error</p>
+<p>If you get the following error message: <code class="docutils literal notranslate"><span class="pre">certificate</span> <span class="pre">verify</span> <span class="pre">failed:</span> <span class="pre">unable</span> <span class="pre">to</span> <span class="pre">get</span> <span class="pre">local</span> <span class="pre">issuer</span> <span class="pre">certificate</span></code>,
+you can download <a class="reference external" href="https://storage.googleapis.com/tensorflow/keras-applications/densenet/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5">the weights of the model manually</a>
+and then load in the weights from the downloaded file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">applications</span><span class="o">.</span><span class="n">DenseNet121</span><span class="p">(</span>
+    <span class="n">include_top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">pooling</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span>
+    <span class="n">weights</span><span class="o">=</span><span class="s1">&#39;densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5&#39;</span><span class="p">,</span> <span class="c1"># this should refer to the weights file you downloaded</span>
+    <span class="n">input_tensor</span><span class="o">=</span><span class="n">upscale</span><span class="p">,</span>
+    <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span><span class="mi">160</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>By setting <code class="docutils literal notranslate"><span class="pre">include_top</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> we exclude the fully connected layer at the
+top of the network, hence the final output layer. This layer was used to predict the Imagenet classes,
+but will be of no use for our Dollar Street dataset.
+Note that the ‘top layer’ appears at the bottom in the output of <code class="docutils literal notranslate"><span class="pre">model.summary()</span></code>.</p>
+<p>We add <code class="docutils literal notranslate"><span class="pre">pooling='max'</span></code> so that max pooling is applied to the output of the DenseNet121 network.</p>
+<p>By setting <code class="docutils literal notranslate"><span class="pre">weights='imagenet'</span></code> we use the weights that resulted from training
+this network on the Imagenet data.</p>
+<p>We connect the network to the <code class="docutils literal notranslate"><span class="pre">upscale</span></code> layer that we defined before.</p>
+</div><div aria-labelledby="tab-3-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-3-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p>From the <code class="docutils literal notranslate"><span class="pre">torchvision.models</span></code> module we use the <code class="docutils literal notranslate"><span class="pre">densenet121</span></code> architecture.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="c1"># We would like to specify a sensible path for this as this is where the pre-trained model is stored.</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TORCH_HOME&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;.&#39;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DenseNetClassifier</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># taking the pre-trained model from torchvision here, but throwing away the head</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+                            <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">densenet121</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="s2">&quot;IMAGENET1K_V1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">features</span><span class="p">,</span>
+                            <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveMaxPool2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                            <span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">())</span>
+        
+        <span class="c1"># creating our own head for classification</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm1d</span><span class="p">(</span><span class="mi">1024</span><span class="p">),</span> 
+                                        <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
+                                        <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                                        <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+                                        <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>    <span class="c1"># → [batch_dim, 1024]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>        <span class="c1"># → [batch_dim, num_classes]</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>We would like to use only the feature extractor of the DenseNet and add our own classification head.
+Thus, we use the <code class="docutils literal notranslate"><span class="pre">torchvision.models.densenet121(weights=&quot;IMAGENET1K_V1&quot;).features</span></code> subpart of the pre-trained DenseNet.
+It maps each image to a vector of dimension <code class="docutils literal notranslate"><span class="pre">1024</span></code>. The <code class="docutils literal notranslate"><span class="pre">weights</span></code> parameter here specifies that we use ImageNet as pre-training data.
+<em>Note that there are many different versions of ImageNet, but for this course it is fine that we use one version of ImageNet.</em></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">self.head</span></code> maps from the vector of dimension <code class="docutils literal notranslate"><span class="pre">1024</span></code> to a vector of dimension <code class="docutils literal notranslate"><span class="pre">num_classes</span></code> (10 in our case).
+The choices here are arbitrary, one might as well as head only one layer of <code class="docutils literal notranslate"><span class="pre">nn.Linear(1024,</span> <span class="pre">num_classes)</span></code>.</p>
+</div></div>
+<section id="only-train-a-head-network">
+<h3>Only train a ‘head’ network<a class="headerlink" href="#only-train-a-head-network" title="Link to this heading">¶</a></h3>
+<p>Instead of fine-tuning all the weights of the DenseNet121 network using our dataset,
+we choose to freeze all these weights and only train a so-called ‘head network’
+that sits on top of the pre-trained network. You can see the DenseNet121 network
+as extracting a meaningful feature representation from our image. The head network
+will then be trained to decide on which of the 10 Dollar Street dataset classes the image belongs.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-4-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-4-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-4-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-4-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-4-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p>We will turn of the <code class="docutils literal notranslate"><span class="pre">trainable</span></code> property of the base model:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_model</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Let’s define our ‘head’ network:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">base_model</span><span class="o">.</span><span class="n">output</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">)(</span><span class="n">out</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally we define our model:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-4-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p>In PyTorch, we can prevent updating layers of the model by setting the <code class="docutils literal notranslate"><span class="pre">param.requires_grad</span></code> property to <code class="docutils literal notranslate"><span class="pre">False</span></code>.
+Here, we do that for the <code class="docutils literal notranslate"><span class="pre">backbone</span></code> part of the model as we would like to train the <code class="docutils literal notranslate"><span class="pre">head</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DenseNetClassifier</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">backbone</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>If you want to make sure, you could print all parameters of <code class="docutils literal notranslate"><span class="pre">backbone</span></code> and <code class="docutils literal notranslate"><span class="pre">head</span></code> and see if they are frozen or not.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Backbone parameters (should not be trainable)&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">backbone</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;backbone&quot;</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;trainable:&quot;</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Backbone parameters (should be trainable)&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;trainable:&quot;</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div></div>
+<div class="admonition-inspect-the-densenet121-network exercise important admonition" id="exercise-0">
+<p class="admonition-title">Inspect the DenseNet121 network</p>
+<p>Have a look at the network architecture:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-5-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-5-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-5-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-5-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-5-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p>Use the following function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-5-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-5-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p>Use the following lines to generate the summary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torchinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">summary</span>
+<span class="n">summary</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>(We set the <code class="docutils literal notranslate"><span class="pre">depth=2</span></code> to reduce the amount of lines printed.)</em></p>
+</div></div>
+<p>It is indeed a deep network, so expect a long summary!</p>
+<p class="rubric" id="trainable-parameters">1.Trainable parameters</p>
+<p>How many parameters are there? How many of them are trainable?</p>
+<p>Why is this and how does it effect the time it takes to train the model?</p>
+<p class="rubric" id="head-and-base">2. Head and base</p>
+<p>Can you see in the model summary which part is the base network and which part is the head network?</p>
+<p class="rubric" id="max-pooling-relevant-only-for-keras">3. Max pooling (relevant only for Keras)</p>
+<p>Which layer is added because we provided <code class="docutils literal notranslate"><span class="pre">pooling='max'</span></code> as argument for <code class="docutils literal notranslate"><span class="pre">DenseNet121()</span></code>?</p>
+</div>
+<div class="admonition-solutions solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Solutions</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-6-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-6-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-6-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-6-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-6-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p class="rubric" id="id1">1. Trainable parameters</p>
+<p>Total number of parameters: 7,093,360, out of which only 53,808 are trainable.</p>
+<p>The 53,808 trainable parameters are the weights of the head network. All other parameters are ‘frozen’ because we set <code class="docutils literal notranslate"><span class="pre">base_model.trainable=False</span></code>. Because only a small proportion of the parameters have to be updated at each training step, this will greatly speed up training time.</p>
+<p class="rubric" id="id2">2. Head and base</p>
+<p>The head network starts at the <code class="docutils literal notranslate"><span class="pre">flatten</span></code> layer, 5 layers before the final layer.</p>
+<p class="rubric" id="id3">3. Max pooling (relevant only for Keras)</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">max_pool</span></code> layer right before the <code class="docutils literal notranslate"><span class="pre">flatten</span></code> layer is added because we provided <code class="docutils literal notranslate"><span class="pre">pooling='max'</span></code>.</p>
+</div><div aria-labelledby="tab-6-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-6-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p class="rubric" id="id4">1. Trainable parameters</p>
+<p>Total number of parameters: 7,007,664, out of which only 53,808 are trainable.</p>
+<p>The 53,808 trainable parameters are the weights of the head network. All other parameters are ‘frozen’ because we set <code class="docutils literal notranslate"><span class="pre">param.requires_grad</span> <span class="pre">=</span> <span class="pre">False</span></code>. Because only a small proportion of the parameters have to be updated at each training step, this will greatly speed up training time.</p>
+<p class="rubric" id="id5">2. Head and base</p>
+<p>The head network starts at the <code class="docutils literal notranslate"><span class="pre">flatten</span></code> layer, 5 layers before the final layer.</p>
+</div></div>
+</div>
+<div class="admonition-training-and-evaluating-the-pre-trained-model exercise important admonition" id="exercise-1">
+<p class="admonition-title">Training and evaluating the pre-trained model</p>
+<p>Note that we have added more hints for PyTorch here as it requires more lines of code, but allows also for more customization.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-7-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-7-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-7-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-7-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-7-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p class="rubric" id="compile-the-model">1. Compile the model</p>
+<p>Compile the model:</p>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">adam</span></code> optimizer</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">SparseCategoricalCrossentropy</span></code> loss with <code class="docutils literal notranslate"><span class="pre">from_logits=True</span></code>.</p></li>
+<li><p>Use ‘accuracy’ as a metric.</p></li>
+</ul>
+<p class="rubric" id="train-the-model">2. Train the model</p>
+<p>Train the model on the training dataset:</p>
+<ul class="simple">
+<li><p>Use a batch size of 32</p></li>
+<li><p>Train for 30 epochs, but use an earlystopper with a patience of 5</p></li>
+<li><p>Pass the validation dataset as validation data so we can monitor performance on the validation data during training</p></li>
+<li><p>Store the result of training in a variable called <code class="docutils literal notranslate"><span class="pre">history</span></code></p></li>
+<li><p>Training can take a while, it is a much larger model than what we have seen so far.</p></li>
+</ul>
+<p class="rubric" id="inspect-the-results">3. Inspect the results</p>
+<p>Plot the training history and evaluate the trained model. What do you think of the results?</p>
+<p class="rubric" id="optional-try-out-other-pre-trained-neural-networks">4. (Optional) Try out other pre-trained neural networks</p>
+<p>Train and evaluate another pre-trained model from <a class="reference external" href="https://keras.io/api/applications/">keras applications</a>. How does it compare to DenseNet121?</p>
+</div><div aria-labelledby="tab-7-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-7-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p class="rubric" id="define-training-and-test-loops">1. Define training and test loops</p>
+<p>We first define two functions similar to session 4 that <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> the model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>    
+    <span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>    
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>   
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># this tdqm magic is only there to make this progress bar appear    </span>
+    <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">pbar</span><span class="o">:=</span><span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">))):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">train_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">preds</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> 
+        <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loss: </span><span class="si">{</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span><span class="si">:</span><span class="s2">&gt;7f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+    <span class="n">train_loss</span> <span class="o">/=</span> <span class="n">total</span>
+    <span class="n">train_acc</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+
+    
+    <span class="k">return</span> <span class="n">train_loss</span><span class="p">,</span> <span class="n">train_acc</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="n">dataloder</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">val_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">dataloder</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">val_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">preds</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="n">val_loss</span> <span class="o">/=</span> <span class="n">total</span>
+        <span class="n">val_acc</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+
+    <span class="k">return</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span>
+
+</pre></div>
+</div>
+<p class="rubric" id="id6">2. Train the model</p>
+<p>We use our <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> functions together with other objects know from prior sessions.</p>
+<p>Note that in PyTorch early stopping needs to be defined by you as there is no predefined class as in Keras.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Adam</span>
+
+
+<span class="c1"># take a GPU as default when it is available</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span> <span class="c1"># learning rate is here set to the same as in Keras default</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">val_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+
+<span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1"># for early stopping</span>
+<span class="n">best_val_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="n">patience</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">wait</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># for bookkeeping</span>
+<span class="n">history</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;train_loss&quot;</span><span class="p">:</span> <span class="p">[],</span>    <span class="s2">&quot;train_acc&quot;</span><span class="p">:</span> <span class="p">[],</span>    <span class="s2">&quot;val_loss&quot;</span><span class="p">:</span> <span class="p">[],</span>    <span class="s2">&quot;val_acc&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+    <span class="n">train_loss</span><span class="p">,</span> <span class="n">train_acc</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">dataloader</span><span class="o">=</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="o">=</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">dataloder</span><span class="o">=</span><span class="n">val_loader</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="o">=</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        
+        
+    <span class="c1"># Save to history</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">&quot;epoch&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">&quot;train_loss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">&quot;train_acc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_acc</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_loss&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_acc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
+
+
+    <span class="c1"># print progress</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> Train Acc: </span><span class="si">{</span><span class="n">train_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Val Loss: </span><span class="si">{</span><span class="n">val_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> Val Acc: </span><span class="si">{</span><span class="n">val_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Early stopping (there is not a build-in version for that in PyTorch)</span>
+    <span class="k">if</span> <span class="n">val_loss</span> <span class="o">&lt;</span> <span class="n">best_val_loss</span><span class="p">:</span>        
+        <span class="n">best_val_loss</span> <span class="o">=</span> <span class="n">val_loss</span>
+        <span class="n">wait</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s2">&quot;best_model.pt&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wait</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">wait</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Early stopping triggered.&quot;</span><span class="p">)</span> 
+            <span class="k">break</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training complete at epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p class="rubric" id="id7">3. Inspect the results</p>
+<p>You can plot the results yourself or have a look at the plotting in the solution.</p>
+<p class="rubric" id="id8">4. (Optional) Try out other pre-trained neural networks</p>
+<p>Train and evaluate another pre-trained model from <a class="reference external" href="https://docs.pytorch.org/vision/main/models.html">torch vision</a>. How does it compare to DenseNet121?</p>
+</div></div>
+</div>
+<div class="admonition-solution solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Solution</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-S2VyYXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-8-S2VyYXM=" name="S2VyYXM=" role="tab" tabindex="0">Keras</button><button aria-controls="panel-8-UHlUb3JjaA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-8-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tab" tabindex="-1">PyTorch</button></div><div aria-labelledby="tab-8-S2VyYXM=" class="sphinx-tabs-panel group-tab" id="panel-8-S2VyYXM=" name="S2VyYXM=" role="tabpanel" tabindex="0"><p class="rubric" id="id9">1. Compile the model</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+              <span class="n">loss</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="rubric" id="id10">2. Train the model</p>
+<p>Define the early stopper:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">early_stopper</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">,</span>
+                              <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Train the model:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">train_images</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">train_labels</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                    <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stopper</span><span class="p">],</span>
+                    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">val_images</span><span class="p">,</span> <span class="n">val_labels</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="rubric" id="id11">3. Inspect the results</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the training history</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        history (keras History object that is returned by model.fit())</span>
+<span class="sd">        metrics(str, list): Metric or a list of metrics to plot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">history_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">history_df</span><span class="p">[</span><span class="n">metrics</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;epochs&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;metric&quot;</span><span class="p">)</span>
+
+<span class="n">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;val_accuracy&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><img alt="" class="align-center" src="../_images/05_training_history_transfer_learning.png" />
+The final validation accuracy reaches 64%, this is a huge improvement over 30% accuracy we reached with the simple convolutional neural network that we build from scratch in the previous episode.</p>
+</div><div aria-labelledby="tab-8-UHlUb3JjaA==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-8-UHlUb3JjaA==" name="UHlUb3JjaA==" role="tabpanel" tabindex="0"><p class="rubric" id="see-solution-in-exercise">1. See solution in exercise</p>
+<p class="rubric" id="id12">2. See solution in exercise</p>
+<p class="rubric" id="id13">3. Inspect the results</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+    <span class="n">history_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">history_df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;epoch&quot;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;epochs&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;metric&quot;</span><span class="p">)</span>
+
+<span class="n">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;train_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><img alt="" class="align-center" src="../_images/05_training_history_transfer_learning_pytorch.png" />
+The final validation accuracy reaches 64%, this is a huge improvement over the accuracy we reached with the simple convolutional neural network that we build from scratch in the previous episode.</p>
+</div></div>
+</div>
+</section>
+</section>
+<section id="concluding-the-power-of-transfer-learning">
+<h2>Concluding: The power of transfer learning<a class="headerlink" href="#concluding-the-power-of-transfer-learning" title="Link to this heading">¶</a></h2>
+<p>In many domains, large networks are available that have been trained on vast amounts of data, such as in computer vision and natural language processing. Using transfer learning, you can benefit from the knowledge that was captured from another machine learning task. In many fields, transfer learning will outperform models trained from scratch, especially if your dataset is small or of poor quality.</p>
+<p>Transfer learning adapts a model to a specific dataset. This typically leads to improvements in the particular domain covered by the data.
+<a class="reference external" href="https://www.nature.com/articles/s41586-025-09937-5">Research</a> has shown, however, that fine-tuning the model weights like this can have negative side effects on the model performance in other domains so that a specialized, fine-tuned model must be re-evaluated before using it for more generic tasks.</p>
+<div class="admonition-keypoints keypoints admonition" id="keypoints-0">
+<p class="admonition-title">Keypoints</p>
+<ul class="simple">
+<li><p>Large pre-trained models capture generic knowledge about a domain</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">keras.applications</span></code> or <code class="docutils literal notranslate"><span class="pre">torchvision.models</span></code> module to easily use pre-trained models for your own datasets</p></li>
+<li><p>As usual with all options, there can be drawbacks to using pre-trained models.</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../6-outlook/">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">6. Outlook</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../4-advanced-layer-types/">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">4. Advanced layer types</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Mimer AI Factory, The contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/mimer-ai/deep-learning-intro" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">5. Transfer learning</a><ul>
+<li><a class="reference internal" href="#what-is-transfer-learning">What is transfer learning?</a></li>
+<li><a class="reference internal" href="#formulate-outline-the-problem">1. Formulate / Outline the problem</a></li>
+<li><a class="reference internal" href="#identify-inputs-and-outputs">2. Identify inputs and outputs</a></li>
+<li><a class="reference internal" href="#prepare-the-data">3. Prepare the data</a><ul>
+<li><a class="reference internal" href="#import-the-deep-learning-framework">Import the deep learning framework</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#choose-a-pre-trained-model-or-start-building-architecture-from-scratch">4. Choose a pre-trained model or start building architecture from scratch</a><ul>
+<li><a class="reference internal" href="#only-train-a-head-network">Only train a ‘head’ network</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#concluding-the-power-of-transfer-learning">Concluding: The power of transfer learning</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=187304be"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=35a8b989"></script>
+    <script src="../_static/minipres.js?v=a0d29692"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    <script async="async" src="../_static/pa.js?v=e2193c5c"></script>
+    <script src="../_static/pa_init.js?v=e5588799"></script>
+    </body>
+</html>
