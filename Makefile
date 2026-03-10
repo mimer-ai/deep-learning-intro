@@ -28,7 +28,8 @@ patch:
 	python3 patch.py $(SOURCEDIR) episodes learners instructors profiles
 
 filter-repo:
-	@echo git filter-repo \
+	@echo IMPORTANT: Make a fresh clone before proceeding
+	git filter-repo \
 	    $(foreach path,$(MAIN_BRANCH_PATHS),--path $(path)) \
 	    --replace-refs delete-no-add
 
